@@ -21,7 +21,7 @@ from .gcs_storage_client_helper import StorageClientHelper
 
 
 class DatacatalogFilesetEnricher:
-    __FILE_PATTERN_REGEX = r'^gs:[\/][\/]([a-zA-Z-_\d]+)[\/](.*)$'
+    __FILE_PATTERN_REGEX = r'^gs:[\/][\/]([a-zA-Z-_\d*]+)[\/](.*)$'
 
     def __init__(self, project_id):
         self.__storage_helper = StorageClientHelper(project_id)
@@ -76,19 +76,25 @@ class DatacatalogFilesetEnricher:
         # Split the file pattern into bucket_name and file_regex.
         parsed_gcs_pattern = DatacatalogFilesetEnricher.parse_gcs_file_pattern(file_pattern)
 
-        logging.info('===> Get the Bucket from DataCatalog...')
-        bucket = self.__storage_helper.get_bucket(parsed_gcs_pattern['bucket_name'])
+        bucket_name = parsed_gcs_pattern['bucket_name']
 
-        logging.info('==== DONE ==================================================')
-        logging.info('')
+        bucket = None
+        dataframe = None
+        if '*' in bucket_name:
+            pass
+        else:
+            logging.info('===> Get the Bucket from DataCatalog...')
+            bucket = self.__storage_helper.get_bucket(bucket_name)
+
+            logging.info('==== DONE ==================================================')
+            logging.info('')
+
+            if bucket:
+                logging.info('Get Files information from Cloud Storage...')
+                blobs = self.filter_blobs_from_bucket(bucket, parsed_gcs_pattern["file_regex"])
+                dataframe = self.create_dataframe_from_blobs(blobs)
 
         logging.info('===> Generate Fileset statistics...')
-        dataframe = None
-        if bucket:
-            logging.info('Get Files information from Cloud Storage...')
-            blobs = self.filter_blobs_from_bucket(bucket, parsed_gcs_pattern["file_regex"])
-            dataframe = self.create_dataframe_from_blobs(blobs)
-
         stats = self.create_stats_from_dataframe(dataframe, file_pattern)
 
         # ADD info about not existing buckets, to show users they used an invalid bucket name
