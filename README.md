@@ -60,7 +60,7 @@ Docker may be used as an alternative to run all the scripts. In this case, pleas
 - python
 
 ```bash
-python main.py --project-id=my_project \
+python main.py --project-id my_project \
   enrich-gcs-filesets
 ```
 
@@ -69,7 +69,7 @@ python main.py --project-id=my_project \
 ```bash
 docker build --rm --tag datacatalog-fileset-enricher .
 docker run --rm --tty -v your_credentials_folder:/data datacatalog-fileset-enricher \
-  --project-id=my_project \
+  --project-id my_project \
   enrich-gcs-filesets
 ```
 
@@ -77,7 +77,7 @@ docker run --rm --tty -v your_credentials_folder:/data datacatalog-fileset-enric
 Cleans up the Template and Tags from the Fileset Entries, running the main command will recreate those.
 
 ```bash
-python main.py --project-id=my_project \
+python main.py --project-id my_project \
   clean-up-templates-and-tags
 ```
 
@@ -86,7 +86,7 @@ Cleans up the Fileset Entries, Template and Tags. You have to re create the File
 which is outside the scope of this script.
 
 ```bash
-python main.py --project-id=my_project \
+python main.py --project-id my_project \
   clean-up-all
 ```
 

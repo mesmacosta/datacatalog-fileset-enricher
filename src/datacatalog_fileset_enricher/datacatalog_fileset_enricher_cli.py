@@ -7,16 +7,16 @@ from .datacatalog_fileset_enricher import DatacatalogFilesetEnricher
 class DatacatalogFilesetEnricherCLI:
 
     @classmethod
-    def run(cls):
+    def run(cls, argv):
         cls.__setup_logging()
-        cls.__parse_args()
+        cls._parse_args(argv)
 
     @classmethod
     def __setup_logging(cls):
         logging.basicConfig(level=logging.INFO)
 
     @classmethod
-    def __parse_args(cls):
+    def _parse_args(cls, argv):
         parser = argparse.ArgumentParser(
             description=__doc__,
             formatter_class=argparse.RawDescriptionHelpFormatter
@@ -47,7 +47,7 @@ class DatacatalogFilesetEnricherCLI:
             help='Clean up Fileset Entries, Their Tags and the Fileset Enhancer Template')
         clean_up_all.set_defaults(func=cls.__clean_up_all)
 
-        args = parser.parse_args()
+        args = parser.parse_args(argv)
         args.func(args)
 
     @classmethod
