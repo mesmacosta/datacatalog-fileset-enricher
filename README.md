@@ -74,12 +74,16 @@ docker run --rm --tty -v your_credentials_folder:/data datacatalog-fileset-enric
 ```
 
 ### 2.1. python clean up Template and Tags from the Fileset Entries
+```bash
 python main.py --project-id=my_project \
   clean-up-templates-and-tags
+```
 
 ### 2.2. !!Be Careful!! python clean up Fileset Entries, Their Tags and the Fileset Enhancer Template
+```bash
 python main.py --project-id=my_project \
   clean-up-all
+```
 
 [1]: https://circleci.com/gh/mesmacosta/datacatalog-fileset-enricher.svg?style=svg
 [2]: https://circleci.com/gh/mesmacosta/datacatalog-fileset-enricher
