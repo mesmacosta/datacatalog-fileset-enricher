@@ -55,7 +55,7 @@ Docker may be used as an alternative to run all the scripts. In this case, pleas
 
 ## 2. Enrich DataCatalog Fileset Entry with Tags
 
-### 2.1. python main.py create-tags
+### 2.1. python main.py
 
 - python
 
@@ -73,13 +73,18 @@ docker run --rm --tty -v your_credentials_folder:/data datacatalog-fileset-enric
   enrich-gcs-filesets
 ```
 
-### 2.1. python clean up Template and Tags from the Fileset Entries
+### 2.1. python clean up template and tags (Reversible)
+Cleans up the Template and Tags from the Fileset Entries, running the main command will recreate those.
+
 ```bash
 python main.py --project-id=my_project \
   clean-up-templates-and-tags
 ```
 
-### 2.2. !!Be Careful!! python clean up Fileset Entries, Their Tags and the Fileset Enhancer Template
+### 2.2.  python clean up all (Non Reversible, be careful)
+Cleans up the Fileset Entries, Template and Tags. You have to re create the Fileset entries if you need to restore the state,
+which is outside the scope of this script.
+
 ```bash
 python main.py --project-id=my_project \
   clean-up-all
