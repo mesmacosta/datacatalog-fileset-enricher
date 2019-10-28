@@ -43,17 +43,22 @@ class DatacatalogFilesetEnricher:
         self.__dacatalog_helper.delete_tag_template()
         logging.info(f'Template and Tags deleted...')
 
-    def run(self):
-        logging.info(f'===> Retrieving manually created Fileset Entries'
-                     f' project: {self.__project_id}')
-        logging.info('')
-        entries = self.__dacatalog_helper.get_manually_created_fileset_entries()
-
-        logging.info(f'{len(entries)} Entries will be processed...')
-        logging.info('')
-
-        for entry_group_id, entry_id in entries:
+    def run(self, entry_group_id=None, entry_id=None):
+        # If the entry_group_id and entry_id are provided we enrich just this entry,
+        # otherwise we retrieve the Fileset Entries using search
+        if entry_group_id and entry_id:
             self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id)
+        else:
+            logging.info(f'===> Retrieving manually created Fileset Entries'
+                         f' project: {self.__project_id}')
+            logging.info('')
+            entries = self.__dacatalog_helper.get_manually_created_fileset_entries()
+
+            logging.info(f'{len(entries)} Entries will be processed...')
+            logging.info('')
+
+            for entry_group_id, entry_id in entries:
+                self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id)
 
     def enrich_datacatalog_fileset_entry(self, entry_group_id, entry_id):
         logging.info('')

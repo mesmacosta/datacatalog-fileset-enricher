@@ -52,7 +52,7 @@ class DatacatalogFilesetEnricherCLI:
 
     @classmethod
     def __enrich_fileset(cls, args):
-        DatacatalogFilesetEnricher(args.project_id).run()
+        DatacatalogFilesetEnricher(args.project_id).run(args.entry_group_id, args.entry_id)
 
     @classmethod
     def __clean_up_fileset_template_and_tags(cls, args):
