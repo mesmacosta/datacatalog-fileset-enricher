@@ -20,13 +20,7 @@ class StorageClientHelper:
             return None
 
     def list_buckets(self, prefix=None):
-        results_iterator = self.__list_buckets(self.__project_id, prefix)
-
-        results = []
-        for page in results_iterator.pages:
-            results.extend(page)
-
-        return results
+        return self.__list_buckets(self.__project_id, prefix)
 
     def list_blobs(self, bucket, prefix=None):
         results_iterator = self.__storage_cloud_client.list_blobs(bucket, prefix=prefix)
@@ -39,4 +33,10 @@ class StorageClientHelper:
 
     @lru_cache(maxsize=1024)
     def __list_buckets(self, project_id, prefix=None):
-        return self.__storage_cloud_client.list_buckets(prefix=prefix, project=project_id)
+        results_iterator = self.__storage_cloud_client.list_buckets(prefix=prefix,
+                                                                    project=project_id)
+        results = []
+        for page in results_iterator.pages:
+            results.extend(page)
+
+        return results

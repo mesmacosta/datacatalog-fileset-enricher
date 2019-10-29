@@ -76,12 +76,12 @@ class DataCatalogHelper:
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.STRING.value
 
         tag_template.fields['buckets_found'].display_name = \
-            'Number of buckets that matched the prefix'
+            'Number of buckets that matches the prefix'
         tag_template.fields['buckets_found'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
 
         tag_template.fields['files_by_bucket'].display_name = \
-            'Number of files found on each bucket'
+            'Number of files found on each bucket that matches the prefix'
         tag_template.fields['files_by_bucket'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.STRING.value
 
