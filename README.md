@@ -6,7 +6,7 @@ A Python package to enrich Google Cloud Data Catalog Fileset Entries with Data C
 
 ## 1. Created Tags
 
-Tags created by the fileset enricher are composed by the attributes, all stats are a snapshot at the
+Tags created by the fileset enricher are composed by the attributes, all stats are a snapshot of the
 execution time:
 
 | Column                     | Description                                                            | Mandatory |
