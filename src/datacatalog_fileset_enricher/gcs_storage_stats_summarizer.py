@@ -1,4 +1,4 @@
-class GCStorageStatsReducer:
+class GCStorageStatsSummarizer:
 
     @classmethod
     def create_stats_from_dataframe(cls, dataframe, prefix, filtered_buckets_stats):

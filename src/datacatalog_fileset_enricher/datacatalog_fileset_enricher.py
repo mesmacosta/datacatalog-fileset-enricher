@@ -2,7 +2,7 @@ import logging
 
 from .datacatalog_helper import DataCatalogHelper
 from .gcs_storage_filter import GCStorageFilter
-from .gcs_storage_stats_reducer import GCStorageStatsReducer
+from .gcs_storage_stats_summarizer import GCStorageStatsSummarizer
 
 """
  The Fileset Enhancer relies on the file_pattern created on the Entry.
@@ -90,8 +90,8 @@ class DatacatalogFilesetEnricher:
                                                        parsed_gcs_pattern["file_regex"])
 
         logging.info('===> Generate Fileset statistics...')
-        stats = GCStorageStatsReducer.create_stats_from_dataframe(dataframe, file_pattern,
-                                                                  filtered_buckets_stats)
+        stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe, file_pattern,
+                                                                     filtered_buckets_stats)
 
         logging.info('==== DONE ==================================================')
         logging.info('')
