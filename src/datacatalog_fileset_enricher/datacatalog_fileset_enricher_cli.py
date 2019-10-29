@@ -35,6 +35,9 @@ class DatacatalogFilesetEnricherCLI:
                                      help='Entry Group ID')
         enrich_filesets.add_argument('--entry-id',
                                      help='Entry ID')
+        enrich_filesets.add_argument('--tag-fields',
+                                     help='Specify the fields you want on the generated Tags,'
+                                          ' split by comma, use the list available in the docs')
         enrich_filesets.set_defaults(func=cls.__enrich_fileset)
 
         clean_up_tags = subparsers.add_parser(
@@ -52,7 +55,12 @@ class DatacatalogFilesetEnricherCLI:
 
     @classmethod
     def __enrich_fileset(cls, args):
-        DatacatalogFilesetEnricher(args.project_id).run(args.entry_group_id, args.entry_id)
+        tag_fields = None
+        if args.tag_fields:
+            tag_fields = args.tag_fields.split(',')
+
+        DatacatalogFilesetEnricher(args.project_id).run(args.entry_group_id, args.entry_id,
+                                                        tag_fields)
 
     @classmethod
     def __clean_up_fileset_template_and_tags(cls, args):

@@ -43,11 +43,11 @@ class DatacatalogFilesetEnricher:
         self.__dacatalog_helper.delete_tag_template()
         logging.info(f'Template and Tags deleted...')
 
-    def run(self, entry_group_id=None, entry_id=None):
+    def run(self, entry_group_id=None, entry_id=None, tag_fields=None):
         # If the entry_group_id and entry_id are provided we enrich just this entry,
         # otherwise we retrieve the Fileset Entries using search
         if entry_group_id and entry_id:
-            self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id)
+            self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id, tag_fields)
         else:
             logging.info(f'===> Retrieving manually created Fileset Entries'
                          f' project: {self.__project_id}')
@@ -58,9 +58,9 @@ class DatacatalogFilesetEnricher:
             logging.info('')
 
             for entry_group_id, entry_id in entries:
-                self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id)
+                self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id, tag_fields)
 
-    def enrich_datacatalog_fileset_entry(self, entry_group_id, entry_id):
+    def enrich_datacatalog_fileset_entry(self, entry_group_id, entry_id, tag_fields=None):
         logging.info('')
         logging.info(f'[ENTRY_GROUP: {entry_group_id}]')
         logging.info(f'[ENTRY: {entry_id}]')
@@ -97,6 +97,6 @@ class DatacatalogFilesetEnricher:
         logging.info('')
 
         logging.info('===> Create Tag on DataCatalog...')
-        self.__dacatalog_helper.create_tag_from_stats(entry, stats)
+        self.__dacatalog_helper.create_tag_from_stats(entry, stats, tag_fields)
         logging.info('==== DONE ==================================================')
         logging.info('')

@@ -11,6 +11,10 @@ class DataCatalogHelper:
     DataCatalogHelper enables calls to datacatalog_v1beta1
     """
 
+    __AVALIABLE_TAG_FIELDS = ['files', 'min_file_size', 'max_file_size', 'avg_file_size',
+                              'first_created_date', 'last_created_date', 'last_updated_date',
+                              'created_files_by_day', 'updated_files_by_day', 'prefix',
+                              'buckets_found', 'files_by_bucket']
     __ENTRY_NAME_PATTERN = r'^projects[\/][a-zA-Z-\d]+[\/]locations[\/][a-zA-Z-\d]+[' \
                            r'\/]entryGroups[\/]([@a-zA-Z-_\d]+)[\/]entries[\/]([a-zA-Z_\d-]+)$'
     __MANUALLY_CREATED_FILESET_ENTRIES_SEARCH_QUERY = \
@@ -42,17 +46,17 @@ class DataCatalogHelper:
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
 
         tag_template.fields['first_created_date'].display_name = \
-            'First time a file was created in the bucket'
+            'First time a file was created in the buckets'
         tag_template.fields['first_created_date'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.TIMESTAMP.value
 
         tag_template.fields['last_created_date'].display_name = \
-            'Last time a file was created in the bucket'
+            'Last time a file was created in the buckets'
         tag_template.fields['last_created_date'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.TIMESTAMP.value
 
         tag_template.fields['last_updated_date'].display_name = \
-            'Last time a file was updated in the bucket'
+            'Last time a file was updated in the buckets'
         tag_template.fields['last_updated_date'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.TIMESTAMP.value
 
@@ -87,7 +91,7 @@ class DataCatalogHelper:
             tag_template_id=DataCatalogHelper.__TAG_TEMPLATE,
             tag_template=tag_template)
 
-    def create_tag_from_stats(self, entry, stats):
+    def create_tag_from_stats(self, entry, stats, tag_fields=None):
         # Create tag_template.
         try:
             tag_template = self.get_fileset_enricher_tag_template()
@@ -117,6 +121,18 @@ class DataCatalogHelper:
                                                                            .isoformat())
             tag.fields['created_files_by_day'].string_value = stats['created_files_by_day']
             tag.fields['updated_files_by_day'].string_value = stats['updated_files_by_day']
+
+        if tag_fields:
+            non_used_tag_fields = set(DataCatalogHelper.__AVALIABLE_TAG_FIELDS).\
+                difference(set(tag_fields))
+
+            for field in non_used_tag_fields:
+                try:
+                    del tag.fields[field]
+                except KeyError:
+                    # In protobufs there's no way to check if a field exists before deleting,
+                    # so we capture KeyError errors.
+                    pass
 
         self.synchronize_entry_tags(entry, [tag])
 
