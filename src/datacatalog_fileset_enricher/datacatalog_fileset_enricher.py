@@ -78,12 +78,11 @@ class DatacatalogFilesetEnricher:
 
         bucket_name = parsed_gcs_pattern['bucket_name']
 
-        bucket = None
         # If we have a wildcard on the bucket_name, we have to retrieve all buckets from the project
         if '*' in bucket_name:
             dataframe, filtered_buckets_stats = self.__storage_filter. \
                 create_filtered_data_for_multiple_buckets(bucket_name, parsed_gcs_pattern[
-                "file_regex"])
+                    "file_regex"])
 
         else:
             dataframe, filtered_buckets_stats = self.__storage_filter. \
@@ -93,10 +92,6 @@ class DatacatalogFilesetEnricher:
         logging.info('===> Generate Fileset statistics...')
         stats = GCStorageStatsReducer.create_stats_from_dataframe(dataframe, file_pattern,
                                                                   filtered_buckets_stats)
-
-        # ADD info about not existing buckets, to show users they used an invalid bucket name
-        if not bucket:
-            stats['bucket_not_found'] = True
 
         logging.info('==== DONE ==================================================')
         logging.info('')

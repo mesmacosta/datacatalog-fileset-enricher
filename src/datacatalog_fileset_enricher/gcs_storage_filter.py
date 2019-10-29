@@ -51,7 +51,8 @@ class GCStorageFilter:
             filtered_buckets_stats.append({'bucket_name': bucket_name, 'files': len(blobs)})
             return self.create_dataframe_from_blobs(blobs), filtered_buckets_stats
         else:
-            filtered_buckets_stats.append({'bucket_name': bucket_name, 'files': 0})
+            filtered_buckets_stats.append({'bucket_name': bucket_name, 'files': 0,
+                                           'bucket_not_found': True})
             return None, filtered_buckets_stats
 
     def filter_blobs_from_bucket(self, bucket, file_regex):

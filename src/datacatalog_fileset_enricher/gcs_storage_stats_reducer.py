@@ -17,12 +17,23 @@ class GCStorageStatsReducer:
                 'max_updated': time_updated.max(),
                 'created_files_by_day': cls.__get_daily_stats(time_created, 'time_created'),
                 'updated_files_by_day': cls.__get_daily_stats(time_updated, 'time_updated'),
-                'prefix': prefix
+                'prefix': prefix,
+                'files_by_bucket': cls.__get_files_by_bucket(filtered_buckets_stats),
+                'buckets_found': len(filtered_buckets_stats)
             }
         else:
+            buckets_found = 0
+            for bucket_stats in filtered_buckets_stats:
+                # This placeholder controls if the prefix was created with a non existent bucket
+                bucket_not_found = bucket_stats.get('bucket_not_found')
+                if not bucket_not_found:
+                    buckets_found += 1
+
             stats = {
                 'count': 0,
-                'prefix': prefix
+                'prefix': prefix,
+                'files_by_bucket': cls.__get_files_by_bucket(filtered_buckets_stats),
+                'buckets_found': buckets_found
             }
 
         return stats
@@ -33,4 +44,11 @@ class GCStorageStatsReducer:
         value = ''
         for day, count in time_created_same_day[timestamp_column].value_counts().iteritems():
             value += f'{day} [count: {count}], '
+        return value[:-2]
+
+    @classmethod
+    def __get_files_by_bucket(cls, filtered_buckets_stats):
+        value = ''
+        for bucket_stats in filtered_buckets_stats:
+            value += f'{bucket_stats["bucket_name"]} [count: {bucket_stats["files"]}], '
         return value[:-2]

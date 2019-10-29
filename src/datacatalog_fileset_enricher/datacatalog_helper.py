@@ -71,10 +71,15 @@ class DataCatalogHelper:
         tag_template.fields['prefix'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.STRING.value
 
-        tag_template.fields['bucket_not_found'].display_name = \
-            'Indicates that the bucket does not exist'
-        tag_template.fields['bucket_not_found'].type.primitive_type = \
-            datacatalog_v1beta1.enums.FieldType.PrimitiveType.BOOL.value
+        tag_template.fields['buckets_found'].display_name = \
+            'Number of buckets that matched the prefix'
+        tag_template.fields['buckets_found'].type.primitive_type = \
+            datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
+
+        tag_template.fields['files_by_bucket'].display_name = \
+            'Number of files found on each bucket'
+        tag_template.fields['files_by_bucket'].type.primitive_type = \
+            datacatalog_v1beta1.enums.FieldType.PrimitiveType.STRING.value
 
         return self.__datacatalog.create_tag_template(
             parent=datacatalog_v1beta1.DataCatalogClient.location_path(
@@ -96,9 +101,8 @@ class DataCatalogHelper:
         count = stats['count']
         tag.fields['files'].double_value = count
 
-        bucket_not_found = stats.get('bucket_not_found')
-        if bucket_not_found:
-            tag.fields['bucket_not_found'].bool_value = True
+        tag.fields['files_by_bucket'].string_value = stats['files_by_bucket']
+        tag.fields['buckets_found'].double_value = stats['buckets_found']
 
         # If we don't have files, then we don't have stats about the files
         if count > 0:
