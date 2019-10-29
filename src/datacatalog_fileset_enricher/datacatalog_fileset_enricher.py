@@ -80,6 +80,7 @@ class DatacatalogFilesetEnricher:
 
         bucket = None
         dataframe = None
+        # If we have a wildcard on the bucket_name, we have to retrieve all buckets from the project
         if '*' in bucket_name:
             pass
         else:
