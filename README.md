@@ -105,7 +105,7 @@ python main.py --project-id my_project \
  --entry-id my_entry
 ```
 
-### 3.2. python main.py -- Enrich a single entry, passing tag fields
+### 3.2. python main.py -- Enrich a single entry, specifying desired tag fields
 Users are able to choose the Tag fields from the list provided at [Tags](#1-created-tags)
 
 ```bash
