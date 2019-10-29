@@ -1,10 +1,8 @@
 import logging
-import re
-
-import pandas as pd
 
 from .datacatalog_helper import DataCatalogHelper
-from .gcs_storage_client_helper import StorageClientHelper
+from .gcs_storage_filter import GCStorageFilter
+from .gcs_storage_stats_reducer import GCStorageStatsReducer
 
 """
  The Fileset Enhancer relies on the file_pattern created on the Entry.
@@ -17,6 +15,8 @@ from .gcs_storage_client_helper import StorageClientHelper
   `gs://bucket_name/a/*/b`: matches all files in `bucket_name` that match
                               `a/*/b` pattern, such as `a/c/b`, `a/d/b`
   `gs://another_bucket/a.txt`: matches `gs://another_bucket/a.txt`
+  `gs://*/a.txt`: matches all buckets and all files named a.txt
+  `gs://*name/a.txt`: matches all buckets that ends with name and all files named a.txt
 """
 
 
@@ -24,7 +24,7 @@ class DatacatalogFilesetEnricher:
     __FILE_PATTERN_REGEX = r'^gs:[\/][\/]([a-zA-Z-_\d*]+)[\/](.*)$'
 
     def __init__(self, project_id):
-        self.__storage_helper = StorageClientHelper(project_id)
+        self.__storage_filter = GCStorageFilter(project_id)
         self.__dacatalog_helper = DataCatalogHelper(project_id)
         self.__project_id = project_id
 
@@ -74,29 +74,24 @@ class DatacatalogFilesetEnricher:
         logging.info('')
 
         # Split the file pattern into bucket_name and file_regex.
-        parsed_gcs_pattern = DatacatalogFilesetEnricher.parse_gcs_file_pattern(file_pattern)
+        parsed_gcs_pattern = self.__storage_filter.parse_gcs_file_pattern(file_pattern)
 
         bucket_name = parsed_gcs_pattern['bucket_name']
 
         bucket = None
-        dataframe = None
         # If we have a wildcard on the bucket_name, we have to retrieve all buckets from the project
         if '*' in bucket_name:
-            pass
+            dataframe, filtered_buckets_stats = self.__storage_filter. \
+                create_filtered_data_for_multiple_buckets(bucket_name, parsed_gcs_pattern[
+                "file_regex"])
+
         else:
-            logging.info('===> Get the Bucket from DataCatalog...')
-            bucket = self.__storage_helper.get_bucket(bucket_name)
-
-            logging.info('==== DONE ==================================================')
-            logging.info('')
-
-            if bucket:
-                logging.info('Get Files information from Cloud Storage...')
-                blobs = self.filter_blobs_from_bucket(bucket, parsed_gcs_pattern["file_regex"])
-                dataframe = self.create_dataframe_from_blobs(blobs)
+            dataframe, filtered_buckets_stats = self.__storage_filter. \
+                create_filtered_data_for_single_bucket(bucket_name,
+                                                       parsed_gcs_pattern["file_regex"])
 
         logging.info('===> Generate Fileset statistics...')
-        stats = self.create_stats_from_dataframe(dataframe, file_pattern)
+        stats = GCStorageStatsReducer.create_stats_from_dataframe(dataframe, file_pattern)
 
         # ADD info about not existing buckets, to show users they used an invalid bucket name
         if not bucket:
@@ -109,68 +104,3 @@ class DatacatalogFilesetEnricher:
         self.__dacatalog_helper.create_tag_from_stats(entry, stats)
         logging.info('==== DONE ==================================================')
         logging.info('')
-
-    def filter_blobs_from_bucket(self, bucket, file_regex):
-        filtered_blobs = []
-        blobs = self.__storage_helper.list_blobs(bucket)
-        for blob in blobs:
-            file_name = blob.name
-            re_match = re.match(f'^{file_regex}$', file_name)
-            if re_match:
-                filtered_blobs.append(blob)
-        return filtered_blobs
-
-    @classmethod
-    def create_stats_from_dataframe(cls, dataframe, prefix):
-        if dataframe is not None:
-            size = dataframe['size']
-            time_created = dataframe['time_created']
-            time_updated = dataframe['time_updated']
-            stats = {
-                'count': len(dataframe),
-                'min_size': size.min(),
-                'max_size': size.max(),
-                'avg_size': size.mean(),
-                'min_created': time_created.min(),
-                'max_created': time_created.max(),
-                'min_updated': time_updated.min(),
-                'max_updated': time_updated.max(),
-                'created_files_by_day': cls.get_daily_stats(time_created, 'time_created'),
-                'updated_files_by_day': cls.get_daily_stats(time_updated, 'time_updated'),
-                'prefix': prefix
-            }
-        else:
-            stats = {
-                'count': 0,
-                'prefix': prefix
-            }
-
-        return stats
-
-    @classmethod
-    def create_dataframe_from_blobs(cls, blobs):
-        dataframe = pd.DataFrame([[blob.name, blob.public_url, blob.size, blob.time_created,
-                                   blob.updated] for blob in blobs],
-                                 columns=['name', 'public_url',
-                                          'size', 'time_created', 'time_updated'])
-        return dataframe
-
-    @classmethod
-    def convert_file_pattern_to_regex(cls, file_pattern):
-        return file_pattern.replace('*', '.*')
-
-    @classmethod
-    def get_daily_stats(cls, series, timestamp_column):
-        time_created_same_day = series.apply(lambda timestamp: timestamp._date_repr).to_frame()
-        value = ''
-        for day, count in time_created_same_day[timestamp_column].value_counts().iteritems():
-            value += f'{day} [count: {count}], '
-        return value[:-2]
-
-    @classmethod
-    def parse_gcs_file_pattern(cls, gcs_file_pattern):
-        re_match = re.match(cls.__FILE_PATTERN_REGEX, gcs_file_pattern)
-        if re_match:
-            bucket_name, gcs_file_pattern = re_match.groups()
-            return {'bucket_name': bucket_name,
-                    'file_regex': cls.convert_file_pattern_to_regex(gcs_file_pattern)}
