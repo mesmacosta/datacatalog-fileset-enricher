@@ -91,7 +91,8 @@ class DatacatalogFilesetEnricher:
                                                        parsed_gcs_pattern["file_regex"])
 
         logging.info('===> Generate Fileset statistics...')
-        stats = GCStorageStatsReducer.create_stats_from_dataframe(dataframe, file_pattern)
+        stats = GCStorageStatsReducer.create_stats_from_dataframe(dataframe, file_pattern,
+                                                                  filtered_buckets_stats)
 
         # ADD info about not existing buckets, to show users they used an invalid bucket name
         if not bucket:

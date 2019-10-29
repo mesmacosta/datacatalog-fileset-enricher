@@ -8,8 +8,7 @@ from google.cloud import datacatalog_v1beta1
 
 class DataCatalogHelper:
     """
-    DataCatalogHelper enables calls to datacatalog_v1beta1 used by the datacatalog_custom_type
-    library
+    DataCatalogHelper enables calls to datacatalog_v1beta1
     """
 
     __ENTRY_NAME_PATTERN = r'^projects[\/][a-zA-Z-\d]+[\/]locations[\/][a-zA-Z-\d]+[' \

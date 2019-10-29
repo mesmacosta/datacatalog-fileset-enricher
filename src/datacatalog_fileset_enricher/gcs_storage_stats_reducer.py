@@ -1,7 +1,7 @@
 class GCStorageStatsReducer:
 
     @classmethod
-    def create_stats_from_dataframe(cls, dataframe, prefix):
+    def create_stats_from_dataframe(cls, dataframe, prefix, filtered_buckets_stats):
         if dataframe is not None:
             size = dataframe['size']
             time_created = dataframe['time_created']
