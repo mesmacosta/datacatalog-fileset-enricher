@@ -107,7 +107,6 @@ python main.py --project-id my_project \
 ```
 
 ### 3.3. python main.py -- Enrich a single entry, specifying desired tag fields
-ADD option to pass a bucket_prefix to scan less data
 Users are able to choose the Tag fields from the list provided at [Tags](#1-created-tags)
 
 ```bash
