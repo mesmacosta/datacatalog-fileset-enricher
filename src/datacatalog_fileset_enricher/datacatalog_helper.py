@@ -28,7 +28,8 @@ class DataCatalogHelper:
 
     def create_fileset_enricher_tag_template(self):
         tag_template = datacatalog_v1beta1.types.TagTemplate()
-        tag_template.display_name = 'Tag Template to enrich the GCS Fileset metadata'
+        tag_template.display_name = 'Tag Template to enrich the GCS Fileset metadata - ' \
+                                    ' all stats are a snapshot of the execution time'
         tag_template.fields['files'].display_name = 'Number of files found'
         tag_template.fields['files'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
@@ -85,6 +86,11 @@ class DataCatalogHelper:
         tag_template.fields['files_by_bucket'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.STRING.value
 
+        tag_template.fields['execution_time'].display_name = \
+            'Execution time when all stats were collected'
+        tag_template.fields['execution_time'].type.primitive_type = \
+            datacatalog_v1beta1.enums.FieldType.PrimitiveType.TIMESTAMP.value
+
         return self.__datacatalog.create_tag_template(
             parent=datacatalog_v1beta1.DataCatalogClient.location_path(
                 self.__project_id, DataCatalogHelper.__LOCATION),
@@ -107,7 +113,8 @@ class DataCatalogHelper:
 
         tag.fields['files_by_bucket'].string_value = stats['files_by_bucket']
         tag.fields['buckets_found'].double_value = stats['buckets_found']
-
+        tag.fields['execution_time'].timestamp_value.FromJsonString(stats['execution_time']
+                                                                    .isoformat())
         # If we don't have files, then we don't have stats about the files
         if count > 0:
             tag.fields['min_file_size'].double_value = stats['min_size']

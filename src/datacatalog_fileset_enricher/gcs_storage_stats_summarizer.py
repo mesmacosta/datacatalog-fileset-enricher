@@ -1,7 +1,7 @@
 class GCStorageStatsSummarizer:
 
     @classmethod
-    def create_stats_from_dataframe(cls, dataframe, prefix, filtered_buckets_stats):
+    def create_stats_from_dataframe(cls, dataframe, prefix, filtered_buckets_stats, execution_time):
         if dataframe is not None:
             size = dataframe['size']
             time_created = dataframe['time_created']
@@ -19,7 +19,8 @@ class GCStorageStatsSummarizer:
                 'updated_files_by_day': cls.__get_daily_stats(time_updated, 'time_updated'),
                 'prefix': prefix,
                 'files_by_bucket': cls.__get_files_by_bucket(filtered_buckets_stats),
-                'buckets_found': len(filtered_buckets_stats)
+                'buckets_found': len(filtered_buckets_stats),
+                'execution_time': execution_time
             }
         else:
             buckets_found = 0
@@ -33,7 +34,8 @@ class GCStorageStatsSummarizer:
                 'count': 0,
                 'prefix': prefix,
                 'files_by_bucket': cls.__get_files_by_bucket(filtered_buckets_stats),
-                'buckets_found': buckets_found
+                'buckets_found': buckets_found,
+                'execution_time': execution_time
             }
 
         return stats

@@ -1,5 +1,7 @@
 import logging
 
+import pandas as pd
+
 from .datacatalog_helper import DataCatalogHelper
 from .gcs_storage_filter import GCStorageFilter
 from .gcs_storage_stats_summarizer import GCStorageStatsSummarizer
@@ -78,6 +80,8 @@ class DatacatalogFilesetEnricher:
 
         bucket_name = parsed_gcs_pattern['bucket_name']
 
+        # Get the execution time right before retrieving the files, so the stats are accurate
+        execution_time = pd.Timestamp.utcnow()
         # If we have a wildcard on the bucket_name, we have to retrieve all buckets from the project
         if '*' in bucket_name:
             dataframe, filtered_buckets_stats = self.__storage_filter. \
@@ -91,7 +95,8 @@ class DatacatalogFilesetEnricher:
 
         logging.info('===> Generate Fileset statistics...')
         stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe, file_pattern,
-                                                                     filtered_buckets_stats)
+                                                                     filtered_buckets_stats,
+                                                                     execution_time)
 
         logging.info('==== DONE ==================================================')
         logging.info('')

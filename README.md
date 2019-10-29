@@ -6,10 +6,12 @@ A Python package to enrich Google Cloud Data Catalog Fileset Entries with Data C
 
 ## 1. Created Tags
 
-Tags created by the fileset enricher are composed by the attributes:
+Tags created by the fileset enricher are composed by the attributes, all stats are a snapshot at the
+execution time:
 
 | Column                     | Description                                                            | Mandatory |
 | ---                        | ---                                                                    | ---       |
+| **execution_time**         | Execution time when all stats were collected.                          | N         |
 | **files**                  | Number of files found, that matches the prefix.                        | N         |
 | **min_file_size**          | Minimum file size found in bytes.                                      | N         |
 | **max_file_size**          | Maximum file size found in bytes.                                      | N         |
