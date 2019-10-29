@@ -1,7 +1,8 @@
 class GCStorageStatsSummarizer:
 
     @classmethod
-    def create_stats_from_dataframe(cls, dataframe, prefix, filtered_buckets_stats, execution_time):
+    def create_stats_from_dataframe(cls, dataframe, prefix, filtered_buckets_stats,
+                                    execution_time, bucket_prefix):
         if dataframe is not None:
             size = dataframe['size']
             time_created = dataframe['time_created']
@@ -20,7 +21,8 @@ class GCStorageStatsSummarizer:
                 'prefix': prefix,
                 'files_by_bucket': cls.__get_files_by_bucket(filtered_buckets_stats),
                 'buckets_found': len(filtered_buckets_stats),
-                'execution_time': execution_time
+                'execution_time': execution_time,
+                'bucket_prefix': bucket_prefix
             }
         else:
             buckets_found = 0
@@ -35,7 +37,8 @@ class GCStorageStatsSummarizer:
                 'prefix': prefix,
                 'files_by_bucket': cls.__get_files_by_bucket(filtered_buckets_stats),
                 'buckets_found': buckets_found,
-                'execution_time': execution_time
+                'execution_time': execution_time,
+                'bucket_prefix': bucket_prefix
             }
 
         return stats

@@ -38,6 +38,9 @@ class DatacatalogFilesetEnricherCLI:
         enrich_filesets.add_argument('--tag-fields',
                                      help='Specify the fields you want on the generated Tags,'
                                           ' split by comma, use the list available in the docs')
+        enrich_filesets.add_argument('--bucket-prefix',
+                                     help='Specify a bucket prefix if you want to avoid scanning'
+                                          ' too many GCS buckets')
         enrich_filesets.set_defaults(func=cls.__enrich_fileset)
 
         clean_up_tags = subparsers.add_parser(
@@ -60,7 +63,7 @@ class DatacatalogFilesetEnricherCLI:
             tag_fields = args.tag_fields.split(',')
 
         DatacatalogFilesetEnricher(args.project_id).run(args.entry_group_id, args.entry_id,
-                                                        tag_fields)
+                                                        tag_fields, args.bucket_prefix)
 
     @classmethod
     def __clean_up_fileset_template_and_tags(cls, args):

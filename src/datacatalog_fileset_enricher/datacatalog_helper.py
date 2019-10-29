@@ -76,6 +76,11 @@ class DataCatalogHelper:
         tag_template.fields['prefix'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.STRING.value
 
+        tag_template.fields['bucket_prefix'].display_name = \
+            'Buckets without this prefix were ignored'
+        tag_template.fields['bucket_prefix'].type.primitive_type = \
+            datacatalog_v1beta1.enums.FieldType.PrimitiveType.STRING.value
+
         tag_template.fields['buckets_found'].display_name = \
             'Number of buckets that matches the prefix'
         tag_template.fields['buckets_found'].type.primitive_type = \
@@ -115,6 +120,10 @@ class DataCatalogHelper:
         tag.fields['buckets_found'].double_value = stats['buckets_found']
         tag.fields['execution_time'].timestamp_value.FromJsonString(stats['execution_time']
                                                                     .isoformat())
+        bucket_prefix = stats.get('bucket_prefix')
+        if bucket_prefix:
+            tag.fields['bucket_prefix'].string_value = bucket_prefix
+
         # If we don't have files, then we don't have stats about the files
         if count > 0:
             tag.fields['min_file_size'].double_value = stats['min_size']

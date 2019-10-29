@@ -45,11 +45,12 @@ class DatacatalogFilesetEnricher:
         self.__dacatalog_helper.delete_tag_template()
         logging.info(f'Template and Tags deleted...')
 
-    def run(self, entry_group_id=None, entry_id=None, tag_fields=None):
+    def run(self, entry_group_id=None, entry_id=None, tag_fields=None, bucket_prefix=None):
         # If the entry_group_id and entry_id are provided we enrich just this entry,
         # otherwise we retrieve the Fileset Entries using search
         if entry_group_id and entry_id:
-            self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id, tag_fields)
+            self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id, tag_fields,
+                                                  bucket_prefix)
         else:
             logging.info(f'===> Retrieving manually created Fileset Entries'
                          f' project: {self.__project_id}')
@@ -60,9 +61,11 @@ class DatacatalogFilesetEnricher:
             logging.info('')
 
             for entry_group_id, entry_id in entries:
-                self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id, tag_fields)
+                self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id, tag_fields,
+                                                      bucket_prefix)
 
-    def enrich_datacatalog_fileset_entry(self, entry_group_id, entry_id, tag_fields=None):
+    def enrich_datacatalog_fileset_entry(self, entry_group_id, entry_id, tag_fields=None,
+                                         bucket_prefix=None):
         logging.info('')
         logging.info(f'[ENTRY_GROUP: {entry_group_id}]')
         logging.info(f'[ENTRY: {entry_id}]')
@@ -86,7 +89,7 @@ class DatacatalogFilesetEnricher:
         if '*' in bucket_name:
             dataframe, filtered_buckets_stats = self.__storage_filter. \
                 create_filtered_data_for_multiple_buckets(bucket_name, parsed_gcs_pattern[
-                    "file_regex"])
+                    "file_regex"], bucket_prefix)
 
         else:
             dataframe, filtered_buckets_stats = self.__storage_filter. \
@@ -96,7 +99,8 @@ class DatacatalogFilesetEnricher:
         logging.info('===> Generate Fileset statistics...')
         stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe, file_pattern,
                                                                      filtered_buckets_stats,
-                                                                     execution_time)
+                                                                     execution_time,
+                                                                     bucket_prefix)
 
         logging.info('==== DONE ==================================================')
         logging.info('')

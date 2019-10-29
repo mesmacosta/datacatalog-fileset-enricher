@@ -13,9 +13,10 @@ class GCStorageFilter:
         self.__storage_helper = StorageClientHelper(project_id)
         self.__project_id = project_id
 
-    def create_filtered_data_for_multiple_buckets(self, bucket_pattern, file_regex):
+    def create_filtered_data_for_multiple_buckets(self, bucket_pattern, file_regex,
+                                                  bucket_prefix=None):
         logging.info('===> Get all Buckets from Cloud Storage...')
-        buckets = self.__storage_helper.list_buckets()
+        buckets = self.__storage_helper.list_buckets(bucket_prefix)
         logging.info('==== DONE ==================================================')
         logging.info('')
 
@@ -38,7 +39,7 @@ class GCStorageFilter:
         return dataframe, filtered_buckets_stats
 
     def create_filtered_data_for_single_bucket(self, bucket_name, file_regex):
-        logging.info('===> Get the Bucket from Cloud Storage...')
+        logging.info(f'===> Get the Bucket: {bucket_name} from Cloud Storage...')
         bucket = self.__storage_helper.get_bucket(bucket_name)
 
         logging.info('==== DONE ==================================================')
