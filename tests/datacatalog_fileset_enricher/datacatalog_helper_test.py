@@ -293,6 +293,94 @@ class DatacatalogHelperTestCase(TestCase):
         list_tags.assert_called_once()
         create_tag.assert_called_once()
 
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.search_catalog')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.delete_entry')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.delete_entry_group')
+    def test_delete_entries_and_entry_groups_should_successfully_delete_them(self,
+                                                                             delete_entry_group,
+                                                                             delete_entry,
+                                                                             search_catalog):
+        datacatalog_helper = DataCatalogHelper('test_project')
+        entry = MockedObject()
+        entry.name = 'fileset_entry'
+        entry.relative_resource_name = 'entry_group/entries/entry_id'
+
+        entry_2 = MockedObject()
+        entry_2.name = 'fileset_entry'
+        entry_2.relative_resource_name = 'entry_group/entries/entry_id_2'
+
+        entry_3 = MockedObject()
+        entry_3.name = 'fileset_entry'
+        entry_3.relative_resource_name = 'entry_group_2/entries/entry_id_3'
+
+        search_catalog.return_value = [entry, entry_2, entry_3]
+
+        datacatalog_helper.delete_entries_and_entry_groups()
+
+        search_catalog.assert_called_once()
+        self.assertEqual(3, delete_entry.call_count)
+        self.assertEqual(2, delete_entry_group.call_count)
+
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.search_catalog')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.delete_entry')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.delete_entry_group')
+    def test_delete_entries_error_on_delete_entry_should_not_leak_error(self,
+                                                                        delete_entry_group,
+                                                                        delete_entry,
+                                                                        search_catalog):
+        datacatalog_helper = DataCatalogHelper('test_project')
+        entry = MockedObject()
+        entry.name = 'fileset_entry'
+        entry.relative_resource_name = 'entry_group/entries/entry_id'
+
+        entry_2 = MockedObject()
+        entry_2.name = 'fileset_entry'
+        entry_2.relative_resource_name = 'entry_group/entries/entry_id_2'
+
+        entry_3 = MockedObject()
+        entry_3.name = 'fileset_entry'
+        entry_3.relative_resource_name = 'entry_group_2/entries/entry_id_3'
+
+        search_catalog.return_value = [entry, entry_2, entry_3]
+
+        delete_entry.side_effect = Exception('error on delete entry')
+
+        datacatalog_helper.delete_entries_and_entry_groups()
+
+        search_catalog.assert_called_once()
+        self.assertEqual(3, delete_entry.call_count)
+        delete_entry_group.assert_not_called()
+
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.search_catalog')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.delete_entry')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.delete_entry_group')
+    def test_delete_entries_error_on_delete_entry_group_should_not_leak_error(self,
+                                                                              delete_entry_group,
+                                                                              delete_entry,
+                                                                              search_catalog):
+        datacatalog_helper = DataCatalogHelper('test_project')
+        entry = MockedObject()
+        entry.name = 'fileset_entry'
+        entry.relative_resource_name = 'entry_group/entries/entry_id'
+
+        entry_2 = MockedObject()
+        entry_2.name = 'fileset_entry'
+        entry_2.relative_resource_name = 'entry_group/entries/entry_id_2'
+
+        entry_3 = MockedObject()
+        entry_3.name = 'fileset_entry'
+        entry_3.relative_resource_name = 'entry_group_2/entries/entry_id_3'
+
+        search_catalog.return_value = [entry, entry_2, entry_3]
+
+        delete_entry_group.side_effect = Exception('error on delete entry')
+
+        datacatalog_helper.delete_entries_and_entry_groups()
+
+        search_catalog.assert_called_once()
+        self.assertEqual(3, delete_entry.call_count)
+        self.assertEqual(2, delete_entry_group.call_count)
+
     @classmethod
     def __create_full_stats_obj(cls):
         return {'prefix': 'gs://my_bucket*/*.csv',
