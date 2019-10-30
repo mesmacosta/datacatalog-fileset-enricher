@@ -257,8 +257,8 @@ class DataCatalogHelper:
                 if updated_tag.template == current_tag.template:
                     tag_to_create = None
                     if not self.__tags_fields_are_equal(updated_tag, current_tag):
-                        self.__synchronize_tags_fields(updated_tag, current_tag)
-                        tag_to_update = current_tag
+                        updated_tag.name = current_tag.name
+                        tag_to_update = updated_tag
 
             if tag_to_create:
                 tag = self.__datacatalog.create_tag(parent=entry.name, tag=tag_to_create)
@@ -291,23 +291,3 @@ class DataCatalogHelper:
                 return False
 
         return True
-
-    @classmethod
-    def __synchronize_tags_fields(cls, source_tag, target_tag):
-        for field_id in source_tag.fields:
-            source_field = source_tag.fields[field_id]
-            target_field = target_tag.fields[field_id]
-
-            if not target_field.bool_value == source_field.bool_value:
-                target_field.bool_value = source_field.bool_value
-            elif not target_field.double_value == source_field.double_value:
-                target_field.double_value = source_field.double_value
-            elif not target_field.string_value == source_field.string_value:
-                target_field.string_value = source_field.string_value
-            elif not target_field.timestamp_value.seconds == source_field.timestamp_value.seconds:
-                target_field.timestamp_value.FromJsonString(
-                    source_field.timestamp_value.ToJsonString())
-            elif not target_field.enum_value.display_name == source_field.enum_value.display_name:
-                target_field.enum_value.display_name = source_field.enum_value.display_name
-
-        return target_tag

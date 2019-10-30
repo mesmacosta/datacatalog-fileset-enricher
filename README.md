@@ -11,7 +11,7 @@ execution time:
 
 | Column                     | Description                                                            | Mandatory |
 | ---                        | ---                                                                    | ---       |
-| **execution_time**         | Execution time when all stats were collected.                          | N         |
+| **execution_time**         | Execution time when all stats were collected.                          | Y         |
 | **files**                  | Number of files found, that matches the prefix.                        | N         |
 | **min_file_size**          | Minimum file size found in bytes.                                      | N         |
 | **max_file_size**          | Maximum file size found in bytes.                                      | N         |
