@@ -2,7 +2,7 @@
 
 A Python package to enrich Google Cloud Data Catalog Fileset Entries with Data Catalog Tags.
 
-[![CircleCI][1]][2]
+[![CircleCI][1]][2][![Coverage Status][3]][4]
 
 ## 1. Created Tags
 
@@ -147,3 +147,5 @@ python main.py --project-id my_project \
 
 [1]: https://circleci.com/gh/mesmacosta/datacatalog-fileset-enricher.svg?style=svg
 [2]: https://circleci.com/gh/mesmacosta/datacatalog-fileset-enricher
+[3]: https://coveralls.io/repos/github/mesmacosta/datacatalog-fileset-enricher/badge.svg?branch=master
+[4]: https://coveralls.io/github/mesmacosta/datacatalog-fileset-enricher?branch=master
