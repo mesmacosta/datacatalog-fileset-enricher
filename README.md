@@ -147,5 +147,5 @@ python main.py --project-id my_project \
 
 [1]: https://circleci.com/gh/mesmacosta/datacatalog-fileset-enricher.svg?style=svg
 [2]: https://circleci.com/gh/mesmacosta/datacatalog-fileset-enricher
-[3]: https://coveralls.io/repos/github/mesmacosta/datacatalog-fileset-enricher/badge.svg?branch=master
+[3]: https://coveralls.io/repos/github/mesmacosta/datacatalog-fileset-enricher/badge.svg?style=svg
 [4]: https://coveralls.io/github/mesmacosta/datacatalog-fileset-enricher?branch=master
