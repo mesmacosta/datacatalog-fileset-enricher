@@ -2,7 +2,7 @@
 
 A Python package to enrich Google Cloud Data Catalog Fileset Entries with Data Catalog Tags.
 
-[![CircleCI][1]][2][![Coverage Status][3]][4]
+[![CircleCI][1]][2] [![Coverage Status][3]][4]
 
 ## 1. Created Tags
 
