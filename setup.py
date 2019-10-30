@@ -22,9 +22,7 @@ setup(
         'pytest-runner',
     ),
     tests_require=(
-        'pytest-cov',
-        'coverage==4.5.4',
-        'coveralls',
+        'pytest-cov'
     ),
     classifiers=[
         'Development Status :: 1 - Alpha',
