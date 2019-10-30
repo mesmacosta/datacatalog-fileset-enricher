@@ -25,6 +25,66 @@ class DatacatalogHelperTestCase(TestCase):
 
         delete_tag_template.assert_called_once()
 
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.delete_tag_template')
+    def test_delete_tag_template_error_should_not_leak(self, delete_tag_template):
+        datacatalog_helper = DataCatalogHelper('test_project')
+
+        delete_tag_template.side_effect = Exception('error on delete tag template')
+
+        datacatalog_helper.delete_tag_template()
+
+        delete_tag_template.assert_called_once()
+
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.get_entry')
+    def test_get_entry_should_not_raise_error(self, get_entry):
+        datacatalog_helper = DataCatalogHelper('test_project')
+        datacatalog_helper.get_entry('test_entry_group', 'testr_entry')
+
+        get_entry.assert_called_once()
+
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.search_catalog')
+    def test_get_manually_created_fileset_entries_should_return_successfully(self,
+                                                                             search_catalog):
+        datacatalog_helper = DataCatalogHelper('test_project')
+        entry = MockedObject()
+        entry.name = 'fileset_entry'
+        entry.relative_resource_name = \
+            'projects/uat-env-1/locations/us-central1/entryGroups/entry_group_enricher_1/entries/entry_id_enricher_1'
+
+        entry_2 = MockedObject()
+        entry_2.name = 'fileset_entry'
+        entry_2.relative_resource_name = \
+            'projects/uat-env-1/locations/us-central1/entryGroups/entry_group_enricher_1/entries/entry_id_enricher_2'
+
+        entry_3 = MockedObject()
+        entry_3.name = 'fileset_entry'
+        entry_3.relative_resource_name = \
+            'projects/uat-env-1/locations/us-central1/entryGroups/entry_group_enricher_2/entries/entry_id_enricher_3'
+
+        search_catalog.return_value = [entry, entry_2, entry_3]
+
+        results = datacatalog_helper.get_manually_created_fileset_entries()
+
+        returned_entry_1_entry_group, returned_entry_1_id = results[0]
+        returned_entry_2_entry_group, returned_entry_2_id = results[1]
+        returned_entry_3_entry_group, returned_entry_3_id = results[2]
+
+        self.assertEqual('entry_group_enricher_1', returned_entry_1_entry_group)
+        self.assertEqual('entry_id_enricher_1', returned_entry_1_id)
+        self.assertEqual('entry_group_enricher_1', returned_entry_2_entry_group)
+        self.assertEqual('entry_id_enricher_2', returned_entry_2_id)
+        self.assertEqual('entry_group_enricher_2', returned_entry_3_entry_group)
+        self.assertEqual('entry_id_enricher_3', returned_entry_3_id)
+
+        search_catalog.assert_called_once()
+
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.get_tag_template')
+    def test_get_tag_template_should_not_raise_error(self, get_tag_template):
+        datacatalog_helper = DataCatalogHelper('test_project')
+        datacatalog_helper.get_fileset_enricher_tag_template()
+
+        get_tag_template.assert_called_once()
+
     @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.create_tag_template')
     @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.location_path')
     def test_create_tag_template_should_create_all_fields(self, location_path,
