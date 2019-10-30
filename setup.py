@@ -22,6 +22,7 @@ setup(
         'pytest-runner',
     ),
     tests_require=(
+        'coveralls',
         'pytest-cov',
     ),
     classifiers=[
