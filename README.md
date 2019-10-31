@@ -2,6 +2,8 @@
 
 A Python package to enrich Google Cloud Data Catalog Fileset Entries with Data Catalog Tags. The goal of this library is to provide useful statistics regarding the GCS files that match the file pattern on the provided Data Catalog Fileset Entry.
 
+For more Info on how to create Fileset Entries, please go to the official Google Cloud [![Docs][5]]
+
 [![CircleCI][3]][4] [![CoverageStatus][1]][2]
 
 ## 1. Created Tags
@@ -149,3 +151,4 @@ python main.py --project-id my_project \
 [2]: https://coveralls.io/github/mesmacosta/datacatalog-fileset-enricher?branch=master
 [3]: https://circleci.com/gh/mesmacosta/datacatalog-fileset-enricher.svg?style=svg
 [4]: https://circleci.com/gh/mesmacosta/datacatalog-fileset-enricher
+[5]: https://cloud.google.com/data-catalog/docs/how-to/filesets
