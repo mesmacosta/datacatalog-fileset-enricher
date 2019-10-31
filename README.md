@@ -46,7 +46,7 @@ cd datacatalog-fileset-enricher
 - Data Catalog Tag Editor
 - Data Catalog TagTemplate Owner
 - Data Catalog Viewer
-- Storage Object Viewer
+- Storage Admin or Custom Role with storage.buckets.list acl
 
 ##### 2.2.2. Download a JSON key and save it as
 - `./credentials/datacatalog-fileset-enricher.json`
