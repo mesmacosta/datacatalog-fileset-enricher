@@ -1,6 +1,6 @@
 # datacatalog-fileset-enricher
 
-A Python package to enrich Google Cloud Data Catalog Fileset Entries with Data Catalog Tags.
+A Python package to enrich Google Cloud Data Catalog Fileset Entries with Data Catalog Tags. The goal of this library is to provide useful statistics regarding the GCS files that match the file pattern on the provided Data Catalog Fileset Entry.
 
 [![CircleCI][1]][2] [![Coverage Status][3]][4]
 
