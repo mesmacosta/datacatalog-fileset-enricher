@@ -6,7 +6,7 @@ import pandas as pd
 from .gcs_storage_client_helper import StorageClientHelper
 
 
-class GCStorageFilter:
+class StorageFilter:
     __FILE_PATTERN_REGEX = r'^gs:[\/][\/]([a-zA-Z-_\d*]+)[\/](.*)$'
 
     def __init__(self, project_id):

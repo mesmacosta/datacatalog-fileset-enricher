@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 from .datacatalog_helper import DataCatalogHelper
-from .gcs_storage_filter import GCStorageFilter
+from .gcs_storage_filter import StorageFilter
 from .gcs_storage_stats_summarizer import GCStorageStatsSummarizer
 
 """
@@ -26,7 +26,7 @@ class DatacatalogFilesetEnricher:
     __FILE_PATTERN_REGEX = r'^gs:[\/][\/]([a-zA-Z-_\d*]+)[\/](.*)$'
 
     def __init__(self, project_id):
-        self.__storage_filter = GCStorageFilter(project_id)
+        self.__storage_filter = StorageFilter(project_id)
         self.__dacatalog_helper = DataCatalogHelper(project_id)
         self.__project_id = project_id
 
