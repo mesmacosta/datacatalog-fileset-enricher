@@ -2,6 +2,8 @@ from unittest import TestCase
 from unittest.mock import patch
 
 import pandas as pd
+
+from google.cloud import datacatalog_v1beta1
 from google.api_core.exceptions import PermissionDenied
 from google.protobuf.json_format import MessageToDict
 
@@ -441,6 +443,90 @@ class DatacatalogHelperTestCase(TestCase):
         self.assertEqual(3, delete_entry.call_count)
         self.assertEqual(2, delete_entry_group.call_count)
 
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.update_tag')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.create_tag')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.list_tags')
+    def test_synchronize_entries_tags_should_update_tag_on_changes(self,
+                                                                   list_tags,
+                                                                   create_tag,
+                                                                   update_tag):
+        updated_tag = self.__make_fake_tag()
+        current_tag = self.__make_fake_tag()
+        current_tag.fields['test-double-field'].double_value = 2
+
+        list_tags.return_value = [current_tag]
+
+        datacatalog_helper = DataCatalogHelper('test_project')
+        entry = MockedObject()
+        entry.name = 'fileset_entry'
+        entry.relative_resource_name = 'entry_group/entries/entry_id'
+
+        datacatalog_helper.synchronize_entry_tags(entry, [updated_tag])
+
+        create_tag.assert_not_called()
+        update_tag.assert_called_once()
+
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.update_tag')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.create_tag')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.list_tags')
+    def test_synchronize_entries_tags_should_not_update_tag_when_no_changes(self,
+                                                                            list_tags,
+                                                                            create_tag,
+                                                                            update_tag):
+        updated_tag = self.__make_fake_tag()
+        current_tag = self.__make_fake_tag()
+
+        list_tags.return_value = [current_tag]
+
+        datacatalog_helper = DataCatalogHelper('test_project')
+        entry = MockedObject()
+        entry.name = 'fileset_entry'
+        entry.relative_resource_name = 'entry_group/entries/entry_id'
+
+        datacatalog_helper.synchronize_entry_tags(entry, [updated_tag])
+
+        create_tag.assert_not_called()
+        update_tag.assert_not_called()
+
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.update_tag')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.create_tag')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.list_tags')
+    def test_synchronize_entries_tags_should_create_tag_when_tag_is_new(self,
+                                                                        list_tags,
+                                                                        create_tag,
+                                                                        update_tag):
+        updated_tag = self.__make_fake_tag()
+
+        list_tags.return_value = []
+
+        datacatalog_helper = DataCatalogHelper('test_project')
+        entry = MockedObject()
+        entry.name = 'fileset_entry'
+        entry.relative_resource_name = 'entry_group/entries/entry_id'
+
+        datacatalog_helper.synchronize_entry_tags(entry, [updated_tag])
+
+        create_tag.assert_called_once()
+        update_tag.assert_not_called()
+
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.update_tag')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.create_tag')
+    @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.list_tags')
+    def test_synchronize_entries_tags_should_do_nothing_when_no_tags_are_provided(self,
+                                                                                  list_tags,
+                                                                                  create_tag,
+                                                                                  update_tag):
+        datacatalog_helper = DataCatalogHelper('test_project')
+        entry = MockedObject()
+        entry.name = 'fileset_entry'
+        entry.relative_resource_name = 'entry_group/entries/entry_id'
+
+        datacatalog_helper.synchronize_entry_tags(entry, [])
+
+        create_tag.assert_not_called()
+        update_tag.assert_not_called()
+        list_tags.assert_not_called()
+
     @classmethod
     def __create_full_stats_obj(cls):
         return {'prefix': 'gs://my_bucket*/*.csv',
@@ -456,6 +542,18 @@ class DatacatalogHelperTestCase(TestCase):
                 'created_files_by_day': '10/06/2019[count: 10]',
                 'updated_files_by_day': '10/06/2019[count: 10]',
                 'execution_time': pd.Timestamp.utcnow()}
+
+    @classmethod
+    def __make_fake_tag(cls):
+        tag = datacatalog_v1beta1.types.Tag()
+        tag.template = 'test-template'
+        tag.fields['test-bool-field'].bool_value = True
+        tag.fields['test-double-field'].double_value = 1
+        tag.fields['test-string-field'].string_value = 'Test String Value'
+        tag.fields['test-timestamp-field'].timestamp_value.FromJsonString('2019-09-06T11:00:00-03:00')
+        tag.fields['test-enum-field'].enum_value.display_name = 'Test ENUM Value'
+
+        return tag
 
 
 class MockedObject(object):
