@@ -2,7 +2,7 @@
 
 A Python package to enrich Google Cloud Data Catalog Fileset Entries with Data Catalog Tags. The goal of this library is to provide useful statistics regarding the GCS files that match the file pattern on the provided Data Catalog Fileset Entry.
 
-[![CircleCI][3]][4] [![Coverage Status][1]][2]
+[![CircleCI][3]][4] [![CoverageStatus][1]][2]
 
 ## 1. Created Tags
 
