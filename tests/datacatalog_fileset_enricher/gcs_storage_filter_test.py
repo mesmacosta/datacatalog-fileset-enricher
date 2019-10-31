@@ -8,7 +8,7 @@ from datacatalog_fileset_enricher.gcs_storage_filter import StorageFilter
 
 @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.__init__',
        lambda self, *args: None)
-class StorageClientHelperTestCase(TestCase):
+class StorageFilterTestCase(TestCase):
 
     @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_buckets')
     @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_blobs')
