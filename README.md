@@ -43,8 +43,10 @@ cd datacatalog-fileset-enricher
 
 ##### 2.2.1. Create a service account and grant it below roles
 
-- Data Catalog Editor
-- Cloud Storage Editor
+- Data Catalog Tag Editor
+- Data Catalog TagTemplate Owner
+- Data Catalog Viewer
+- Storage Object Viewer
 
 ##### 2.2.2. Download a JSON key and save it as
 - `./credentials/datacatalog-fileset-enricher.json`
