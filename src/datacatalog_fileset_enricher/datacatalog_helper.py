@@ -12,7 +12,8 @@ class DataCatalogHelper:
     """
 
     __AVALIABLE_TAG_FIELDS = ['files', 'min_file_size', 'max_file_size', 'avg_file_size',
-                              'first_created_date', 'last_created_date', 'last_updated_date',
+                              'total_file_size', 'first_created_date', 'last_created_date',
+                              'last_updated_date',
                               'created_files_by_day', 'updated_files_by_day', 'prefix',
                               'buckets_found', 'files_by_bucket', 'files_by_type']
     __ENTRY_NAME_PATTERN = r'^projects[\/][a-zA-Z-\d]+[\/]locations[\/][a-zA-Z-\d]+[' \
@@ -44,6 +45,10 @@ class DataCatalogHelper:
 
         tag_template.fields['avg_file_size'].display_name = 'Average file size found in bytes'
         tag_template.fields['avg_file_size'].type.primitive_type = \
+            datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
+
+        tag_template.fields['total_file_size'].display_name = 'Total file size found in bytes'
+        tag_template.fields['total_file_size'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
 
         tag_template.fields['first_created_date'].display_name = \
@@ -134,6 +139,7 @@ class DataCatalogHelper:
             tag.fields['min_file_size'].double_value = stats['min_size']
             tag.fields['max_file_size'].double_value = stats['max_size']
             tag.fields['avg_file_size'].double_value = stats['avg_size']
+            tag.fields['total_file_size'].double_value = stats['total_size']
             tag.fields['first_created_date'].timestamp_value.FromJsonString(stats['min_created']
                                                                             .isoformat())
             tag.fields['last_created_date'].timestamp_value.FromJsonString(stats['max_created']

@@ -105,6 +105,8 @@ class DatacatalogHelperTestCase(TestCase):
                          tag_template.fields['max_file_size'].display_name)
         self.assertEqual('Average file size found in bytes',
                          tag_template.fields['avg_file_size'].display_name)
+        self.assertEqual('Total file size found in bytes',
+                         tag_template.fields['total_file_size'].display_name)
         self.assertEqual('First time a file was created in the buckets',
                          tag_template.fields['first_created_date'].display_name)
         self.assertEqual('Last time a file was created in the buckets',
@@ -538,6 +540,7 @@ class DatacatalogHelperTestCase(TestCase):
                 'min_size': 1,
                 'max_size': 1000,
                 'avg_size': 500,
+                'total_size': 1500,
                 'min_created': pd.Timestamp.utcnow(),
                 'max_created': pd.Timestamp.utcnow(),
                 'max_updated': pd.Timestamp.utcnow(),

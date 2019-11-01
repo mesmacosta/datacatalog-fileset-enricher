@@ -18,6 +18,7 @@ execution time:
 | **min_file_size**          | Minimum file size found in bytes.                                      | N         |
 | **max_file_size**          | Maximum file size found in bytes.                                      | N         |
 | **avg_file_size**          | Average file size found in bytes.                                      | N         |
+| **total_file_size**        | Total file size found in bytes.                                        | N         |
 | **first_created_date**     | First time a file was created in the bucket(s).                        | N         |
 | **last_created_date**      | Last time a file was created in the bucket(s).                         | N         |
 | **last_updated_date**      | Last time a file was updated in the bucket(s).                         | N         |

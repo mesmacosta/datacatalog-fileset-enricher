@@ -79,6 +79,7 @@ class GCStorageStatsSummarizerTestCase(TestCase):
         self.assertEqual(50000, stats['min_size'])
         self.assertEqual(100000, stats['max_size'])
         self.assertEqual(75000.0, stats['avg_size'])
+        self.assertEqual(150000, stats['total_size'])
         self.assertEqual(execution_time, stats['min_created'])
         self.assertEqual(execution_time, stats['max_created'])
         self.assertEqual(execution_time, stats['min_updated'])

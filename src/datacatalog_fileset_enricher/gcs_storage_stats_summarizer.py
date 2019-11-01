@@ -12,6 +12,7 @@ class GCStorageStatsSummarizer:
                 'min_size': size.min(),
                 'max_size': size.max(),
                 'avg_size': size.mean(),
+                'total_size': size.sum(),
                 'min_created': time_created.min(),
                 'max_created': time_created.max(),
                 'min_updated': time_updated.min(),
@@ -75,4 +76,3 @@ class GCStorageStatsSummarizer:
             return file_name[file_type_at+1:]
         else:
             return 'unknown_file_type'
-
