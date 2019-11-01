@@ -123,6 +123,8 @@ class DatacatalogHelperTestCase(TestCase):
                          tag_template.fields['buckets_found'].display_name)
         self.assertEqual('Number of files found on each bucket that matches the prefix',
                          tag_template.fields['files_by_bucket'].display_name)
+        self.assertEqual('Number of files found by file type',
+                         tag_template.fields['files_by_type'].display_name)
         self.assertEqual('Execution time when all stats were collected',
                          tag_template.fields['execution_time'].display_name)
 
@@ -539,8 +541,9 @@ class DatacatalogHelperTestCase(TestCase):
                 'min_created': pd.Timestamp.utcnow(),
                 'max_created': pd.Timestamp.utcnow(),
                 'max_updated': pd.Timestamp.utcnow(),
-                'created_files_by_day': '10/06/2019[count: 10]',
-                'updated_files_by_day': '10/06/2019[count: 10]',
+                'created_files_by_day': '10/06/2019 [count: 10]',
+                'updated_files_by_day': '10/06/2019 [count: 10]',
+                'files_by_type': 'csv [count: 1]',
                 'execution_time': pd.Timestamp.utcnow()}
 
     @classmethod

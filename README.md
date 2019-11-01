@@ -27,6 +27,7 @@ execution time:
 | **bucket_prefix**          | When specified at runtime, buckets without this prefix are ignored.    | N         |
 | **buckets_found**          | Number of buckets that matched the prefix.                             | N         |
 | **files_by_bucket**        | Number of files found on each bucket.                                  | N         |
+| **files_by_type**          | Number of files found by file type.                                    | N         |
 
 If no fields are specified when running the fileset enricher, all Tag fields will be applied.
 

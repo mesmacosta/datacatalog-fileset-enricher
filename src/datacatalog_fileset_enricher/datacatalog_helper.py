@@ -14,7 +14,7 @@ class DataCatalogHelper:
     __AVALIABLE_TAG_FIELDS = ['files', 'min_file_size', 'max_file_size', 'avg_file_size',
                               'first_created_date', 'last_created_date', 'last_updated_date',
                               'created_files_by_day', 'updated_files_by_day', 'prefix',
-                              'buckets_found', 'files_by_bucket']
+                              'buckets_found', 'files_by_bucket', 'files_by_type']
     __ENTRY_NAME_PATTERN = r'^projects[\/][a-zA-Z-\d]+[\/]locations[\/][a-zA-Z-\d]+[' \
                            r'\/]entryGroups[\/]([@a-zA-Z-_\d]+)[\/]entries[\/]([a-zA-Z_\d-]+)$'
     __MANUALLY_CREATED_FILESET_ENTRIES_SEARCH_QUERY = \
@@ -91,6 +91,11 @@ class DataCatalogHelper:
         tag_template.fields['files_by_bucket'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.STRING.value
 
+        tag_template.fields['files_by_type'].display_name = \
+            'Number of files found by file type'
+        tag_template.fields['files_by_type'].type.primitive_type = \
+            datacatalog_v1beta1.enums.FieldType.PrimitiveType.STRING.value
+
         tag_template.fields['execution_time'].display_name = \
             'Execution time when all stats were collected'
         tag_template.fields['execution_time'].type.primitive_type = \
@@ -137,6 +142,7 @@ class DataCatalogHelper:
                                                                            .isoformat())
             tag.fields['created_files_by_day'].string_value = stats['created_files_by_day']
             tag.fields['updated_files_by_day'].string_value = stats['updated_files_by_day']
+            tag.fields['files_by_type'].string_value = stats['files_by_type']
 
         if tag_fields:
             non_used_tag_fields = set(DataCatalogHelper.__AVALIABLE_TAG_FIELDS).\

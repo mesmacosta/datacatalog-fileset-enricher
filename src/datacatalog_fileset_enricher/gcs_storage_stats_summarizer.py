@@ -20,6 +20,7 @@ class GCStorageStatsSummarizer:
                 'updated_files_by_day': cls.__get_daily_stats(time_updated, 'time_updated'),
                 'prefix': prefix,
                 'files_by_bucket': cls.__get_files_by_bucket(filtered_buckets_stats),
+                'files_by_type': cls.__get_files_by_type(dataframe),
                 'buckets_found': len(filtered_buckets_stats),
                 'execution_time': execution_time,
                 'bucket_prefix': bucket_prefix
@@ -57,3 +58,21 @@ class GCStorageStatsSummarizer:
         for bucket_stats in filtered_buckets_stats:
             value += f'{bucket_stats["bucket_name"]} [count: {bucket_stats["files"]}], '
         return value[:-2]
+
+    @classmethod
+    def __get_files_by_type(cls, dataframe):
+        series = dataframe['name']
+        files_types = series.apply(cls.__extract_file_type).to_frame()
+        value = ''
+        for file_type, count in files_types['name'].value_counts().iteritems():
+            value += f'{file_type} [count: {count}], '
+        return value[:-2]
+
+    @classmethod
+    def __extract_file_type(cls, file_name):
+        file_type_at = file_name.rfind('.')
+        if file_type_at != -1:
+            return file_name[file_type_at+1:]
+        else:
+            return 'unknown_file_type'
+

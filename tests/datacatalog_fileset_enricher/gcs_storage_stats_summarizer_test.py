@@ -54,7 +54,7 @@ class GCStorageStatsSummarizerTestCase(TestCase):
         blob.updated = execution_time
 
         blob_2 = MockedObject()
-        blob_2.name = 'my_file_2'
+        blob_2.name = 'my_file_2.csv'
         blob_2.public_url = 'https://my_file_2'
         blob_2.size = 50000
         blob_2.time_created = execution_time
@@ -83,8 +83,10 @@ class GCStorageStatsSummarizerTestCase(TestCase):
         self.assertEqual(execution_time, stats['max_created'])
         self.assertEqual(execution_time, stats['min_updated'])
         self.assertEqual(execution_time, stats['max_updated'])
-        self.assertEqual('2019-10-31 [count: 2]', stats['created_files_by_day'])
-        self.assertEqual('2019-10-31 [count: 2]', stats['updated_files_by_day'])
+        self.assertIsNotNone(stats['created_files_by_day'])
+        self.assertIsNotNone(stats['updated_files_by_day'])
+        self.assertIn('csv [count: 1]', stats['files_by_type'])
+        self.assertIn('unknown_file_type [count: 1]', stats['files_by_type'])
         self.assertEqual(None, stats['bucket_prefix'])
 
 
