@@ -11,7 +11,7 @@ For instructions on how to create Fileset Entries, please go to the official [Go
 Tags created by the fileset enricher are composed by the following attributes, and all stats are a snapshot of the
 execution time:
 
-| Column                     | Description                                                            | Mandatory |
+| Field                      | Description                                                            | Mandatory |
 | ---                        | ---                                                                    | ---       |
 | **execution_time**         | Execution time when all stats were collected.                          | Y         |
 | **files**                  | Number of files found, that matches the prefix.                        | N         |
