@@ -32,6 +32,8 @@ execution time:
 
 If no fields are specified when running the fileset enricher, all Tag fields will be applied.
 
+**Billing**: this python package, uses the GCS ````list_buckets```` and ````list_blobs```` APIs to extract the metadata that matches the file pattern and generate the file statistics, so their billing policies will apply.
+
 ## 2. Environment setup
 
 ### 2.1. Get the code
