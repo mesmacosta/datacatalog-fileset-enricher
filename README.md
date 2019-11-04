@@ -153,6 +153,10 @@ python main.py --project-id my_project \
   clean-up-all
 ```
 
+## Disclaimers
+
+This is not an officially supported Google product.
+
 [1]: https://coveralls.io/repos/github/mesmacosta/datacatalog-fileset-enricher/badge.svg?branch=master&kill_cache=3
 [2]: https://coveralls.io/github/mesmacosta/datacatalog-fileset-enricher?branch=master
 [3]: https://circleci.com/gh/mesmacosta/datacatalog-fileset-enricher.svg?style=svg
