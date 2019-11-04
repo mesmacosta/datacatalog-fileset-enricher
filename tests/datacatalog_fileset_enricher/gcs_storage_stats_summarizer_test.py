@@ -13,7 +13,8 @@ class GCStorageStatsSummarizerTestCase(TestCase):
         execution_time = pd.Timestamp.utcnow()
         bucket_prefix = None
 
-        stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe, 'gs://my_bucket/*',
+        stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe,
+                                                                     ['gs://my_bucket/*'],
                                                                      filtered_buckets_stats,
                                                                      execution_time,
                                                                      bucket_prefix)
@@ -30,7 +31,8 @@ class GCStorageStatsSummarizerTestCase(TestCase):
         execution_time = pd.Timestamp.utcnow()
         bucket_prefix = 'my_b'
 
-        stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe, 'gs://my_bucket/*',
+        stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe,
+                                                                     ['gs://my_bucket/*'],
                                                                      filtered_buckets_stats,
                                                                      execution_time,
                                                                      bucket_prefix)
@@ -67,7 +69,8 @@ class GCStorageStatsSummarizerTestCase(TestCase):
                                  columns=['name', 'public_url',
                                           'size', 'time_created', 'time_updated'])
 
-        stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe, 'gs://my_bucket/*',
+        stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe,
+                                                                     ['gs://my_bucket/*'],
                                                                      filtered_buckets_stats,
                                                                      execution_time,
                                                                      bucket_prefix)

@@ -149,7 +149,7 @@ class StorageFilterTestCase(TestCase):
 
     def test_parse_gcs_file_pattern_should_split_bucket_name_and_file_pattern(self):
         storage_filter = StorageFilter('test_project')
-        parsed_gcs_file_pattern = storage_filter.parse_gcs_file_pattern('gs://my_bucket*/*')
+        parsed_gcs_file_pattern = storage_filter.parse_gcs_file_patterns(['gs://my_bucket*/*'])[0]
         self.assertEqual('my_bucket.*', parsed_gcs_file_pattern['bucket_name'])
         self.assertEqual('.*', parsed_gcs_file_pattern['file_regex'])
 

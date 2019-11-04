@@ -89,9 +89,14 @@ class StorageFilter:
         return plain_str.replace('*', '.*')
 
     @classmethod
-    def parse_gcs_file_pattern(cls, gcs_file_pattern):
-        re_match = re.match(cls.__FILE_PATTERN_REGEX, gcs_file_pattern)
-        if re_match:
-            bucket_name, gcs_file_pattern = re_match.groups()
-            return {'bucket_name': cls.convert_str_to_usable_regex(bucket_name),
-                    'file_regex': cls.convert_str_to_usable_regex(gcs_file_pattern)}
+    def parse_gcs_file_patterns(cls, gcs_file_patterns):
+        parsed_gcs_patterns = []
+        for gcs_file_pattern in gcs_file_patterns:
+            re_match = re.match(cls.__FILE_PATTERN_REGEX, gcs_file_pattern)
+            if re_match:
+                bucket_name, gcs_file_pattern = re_match.groups()
+                parsed_gcs_patterns.append({'bucket_name':
+                                            cls.convert_str_to_usable_regex(bucket_name),
+                                            'file_regex':
+                                            cls.convert_str_to_usable_regex(gcs_file_pattern)})
+        return parsed_gcs_patterns

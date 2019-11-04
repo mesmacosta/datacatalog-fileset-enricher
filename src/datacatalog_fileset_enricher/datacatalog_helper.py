@@ -21,7 +21,7 @@ class DataCatalogHelper:
     __MANUALLY_CREATED_FILESET_ENTRIES_SEARCH_QUERY = \
         'not name:crawler AND projectId=$project_id AND type=fileset'
     __LOCATION = 'us-central1'
-    __TAG_TEMPLATE = 'fileset_enricher_tag_template'
+    __TAG_TEMPLATE = 'fileset_enricher_findings'
 
     def __init__(self, project_id):
         self.__datacatalog = datacatalog_v1beta1.DataCatalogClient()
