@@ -96,5 +96,9 @@ class GCStorageStatsSummarizer:
             files_by_bucket += f'{bucket_name} [count: {files_sum}], '
 
         files_by_bucket = files_by_bucket[:-2]
+
+        if not files_by_bucket:
+            files_by_bucket = 'bucket_not_found'
+
         buckets_found = len(processed_bucket_stats_dict.keys())
         return buckets_found, files_by_bucket
