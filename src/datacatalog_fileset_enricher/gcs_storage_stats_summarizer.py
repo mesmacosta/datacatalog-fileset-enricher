@@ -12,10 +12,10 @@ class GCStorageStatsSummarizer:
             time_updated = dataframe['time_updated']
             stats = {
                 'count': len(dataframe),
-                'min_size': size.min(),
-                'max_size': size.max(),
-                'avg_size': size.mean(),
-                'total_size': size.sum(),
+                'min_size': cls.__convert_to_mb(size.min()),
+                'max_size': cls.__convert_to_mb(size.max()),
+                'avg_size': cls.__convert_to_mb(size.mean()),
+                'total_size': cls.__convert_to_mb(size.sum()),
                 'min_created': time_created.min(),
                 'max_created': time_created.max(),
                 'min_updated': time_updated.min(),
@@ -40,6 +40,11 @@ class GCStorageStatsSummarizer:
             }
 
         return stats
+
+
+    @classmethod
+    def __convert_to_mb(cls, size_bytes, round_cases=2):
+        return float(f'{(size_bytes / 1000 / 1000):.{round_cases}f}')
 
     @classmethod
     def __get_daily_stats(cls, series, timestamp_column):

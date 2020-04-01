@@ -35,19 +35,19 @@ class DataCatalogHelper:
         tag_template.fields['files'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
 
-        tag_template.fields['min_file_size'].display_name = 'Minimum file size found in bytes'
+        tag_template.fields['min_file_size'].display_name = 'Minimum file size found in megabytes'
         tag_template.fields['min_file_size'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
 
-        tag_template.fields['max_file_size'].display_name = 'Maximum file size found in bytes'
+        tag_template.fields['max_file_size'].display_name = 'Maximum file size found in megabytes'
         tag_template.fields['max_file_size'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
 
-        tag_template.fields['avg_file_size'].display_name = 'Average file size found in bytes'
+        tag_template.fields['avg_file_size'].display_name = 'Average file size found in megabytes'
         tag_template.fields['avg_file_size'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
 
-        tag_template.fields['total_file_size'].display_name = 'Total file size found in bytes'
+        tag_template.fields['total_file_size'].display_name = 'Total file size found in megabytes'
         tag_template.fields['total_file_size'].type.primitive_type = \
             datacatalog_v1beta1.enums.FieldType.PrimitiveType.DOUBLE.value
 

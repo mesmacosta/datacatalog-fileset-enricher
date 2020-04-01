@@ -99,13 +99,13 @@ class DatacatalogHelperTestCase(TestCase):
         self.assertIsNotNone(tag_template)
 
         self.assertEqual('Number of files found', tag_template.fields['files'].display_name)
-        self.assertEqual('Minimum file size found in bytes',
+        self.assertEqual('Minimum file size found in megabytes',
                          tag_template.fields['min_file_size'].display_name)
-        self.assertEqual('Maximum file size found in bytes',
+        self.assertEqual('Maximum file size found in megabytes',
                          tag_template.fields['max_file_size'].display_name)
-        self.assertEqual('Average file size found in bytes',
+        self.assertEqual('Average file size found in megabytes',
                          tag_template.fields['avg_file_size'].display_name)
-        self.assertEqual('Total file size found in bytes',
+        self.assertEqual('Total file size found in megabytes',
                          tag_template.fields['total_file_size'].display_name)
         self.assertEqual('First time a file was created in the buckets',
                          tag_template.fields['first_created_date'].display_name)
