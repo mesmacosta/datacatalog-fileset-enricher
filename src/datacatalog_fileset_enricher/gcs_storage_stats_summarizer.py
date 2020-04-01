@@ -41,7 +41,6 @@ class GCStorageStatsSummarizer:
 
         return stats
 
-
     @classmethod
     def __convert_to_mb(cls, size_bytes, round_cases=2):
         return float(f'{(size_bytes / 1000 / 1000):.{round_cases}f}')
