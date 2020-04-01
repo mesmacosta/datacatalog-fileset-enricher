@@ -23,6 +23,8 @@ from .gcs_storage_stats_summarizer import GCStorageStatsSummarizer
 
 
 class DatacatalogFilesetEnricher:
+    # Default location.
+    __LOCATION = 'us-central1'
     __FILE_PATTERN_REGEX = r'^gs:[\/][\/]([a-zA-Z-_\d*]+)[\/](.*)$'
 
     def __init__(self, project_id):
@@ -49,8 +51,8 @@ class DatacatalogFilesetEnricher:
         # If the entry_group_id and entry_id are provided we enrich just this entry,
         # otherwise we retrieve the Fileset Entries using search
         if entry_group_id and entry_id:
-            self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id, tag_fields,
-                                                  bucket_prefix)
+            self.enrich_datacatalog_fileset_entry(self.__LOCATION, entry_group_id, entry_id,
+                                                  tag_fields, bucket_prefix)
         else:
             logging.info(f'===> Retrieving manually created Fileset Entries'
                          f' project: {self.__project_id}')
@@ -60,19 +62,20 @@ class DatacatalogFilesetEnricher:
             logging.info(f'{len(entries)} Entries will be processed...')
             logging.info('')
 
-            for entry_group_id, entry_id in entries:
-                self.enrich_datacatalog_fileset_entry(entry_group_id, entry_id, tag_fields,
-                                                      bucket_prefix)
+            for location, entry_group_id, entry_id in entries:
+                self.enrich_datacatalog_fileset_entry(location, entry_group_id, entry_id,
+                                                      tag_fields, bucket_prefix)
 
-    def enrich_datacatalog_fileset_entry(self, entry_group_id, entry_id, tag_fields=None,
+    def enrich_datacatalog_fileset_entry(self, location, entry_group_id, entry_id, tag_fields=None,
                                          bucket_prefix=None):
         logging.info('')
+        logging.info(f'[LOCATION: {location}]')
         logging.info(f'[ENTRY_GROUP: {entry_group_id}]')
         logging.info(f'[ENTRY: {entry_id}]')
         logging.info(f'===> Enrich Fileset Entry metadata with tags')
         logging.info('')
         logging.info('===> Get Entry from DataCatalog...')
-        entry = self.__dacatalog_helper.get_entry(entry_group_id, entry_id)
+        entry = self.__dacatalog_helper.get_entry(location, entry_group_id, entry_id)
         file_patterns = list(entry.gcs_fileset_spec.file_patterns)
 
         logging.info('==== DONE ==================================================')

@@ -40,7 +40,7 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('google.cloud.datacatalog_v1beta1.DataCatalogClient.get_entry')
     def test_get_entry_should_not_raise_error(self, get_entry):
         datacatalog_helper = DataCatalogHelper('test_project')
-        datacatalog_helper.get_entry('test_entry_group', 'testr_entry')
+        datacatalog_helper.get_entry('uscentral-1', 'test_entry_group', 'testr_entry')
 
         get_entry.assert_called_once()
 
@@ -67,14 +67,17 @@ class DatacatalogHelperTestCase(TestCase):
 
         results = datacatalog_helper.get_manually_created_fileset_entries()
 
-        returned_entry_1_entry_group, returned_entry_1_id = results[0]
-        returned_entry_2_entry_group, returned_entry_2_id = results[1]
-        returned_entry_3_entry_group, returned_entry_3_id = results[2]
+        returned_location_1, returned_entry_1_entry_group, returned_entry_1_id = results[0]
+        returned_location_2, returned_entry_2_entry_group, returned_entry_2_id = results[1]
+        returned_location_3, returned_entry_3_entry_group, returned_entry_3_id = results[2]
 
+        self.assertEqual('us-central1', returned_location_1)
         self.assertEqual('entry_group_enricher_1', returned_entry_1_entry_group)
         self.assertEqual('entry_id_enricher_1', returned_entry_1_id)
+        self.assertEqual('us-central1', returned_location_2)
         self.assertEqual('entry_group_enricher_1', returned_entry_2_entry_group)
         self.assertEqual('entry_id_enricher_2', returned_entry_2_id)
+        self.assertEqual('us-central1', returned_location_3)
         self.assertEqual('entry_group_enricher_2', returned_entry_3_entry_group)
         self.assertEqual('entry_id_enricher_3', returned_entry_3_id)
 

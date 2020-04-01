@@ -16,7 +16,7 @@ class DataCatalogHelper:
                               'last_updated_date',
                               'created_files_by_day', 'updated_files_by_day', 'prefix',
                               'buckets_found', 'files_by_bucket', 'files_by_type']
-    __ENTRY_NAME_PATTERN = r'^projects[\/][a-zA-Z-\d]+[\/]locations[\/][a-zA-Z-\d]+[' \
+    __ENTRY_NAME_PATTERN = r'^projects[\/][a-zA-Z-\d]+[\/]locations[\/]([a-zA-Z-\d]+)[' \
                            r'\/]entryGroups[\/]([@a-zA-Z-_\d]+)[\/]entries[\/]([a-zA-Z_\d-]+)$'
     __MANUALLY_CREATED_FILESET_ENTRIES_SEARCH_QUERY = \
         'not name:crawler AND projectId=$project_id AND type=fileset'
@@ -220,9 +220,9 @@ class DataCatalogHelper:
                                                               DataCatalogHelper.__TAG_TEMPLATE)
         self.__datacatalog.delete_tag(name)
 
-    def get_entry(self, entry_group_id, entry_id):
+    def get_entry(self, location, entry_group_id, entry_id):
         name = datacatalog_v1beta1.DataCatalogClient.entry_path(self.__project_id,
-                                                                DataCatalogHelper.__LOCATION,
+                                                                location,
                                                                 entry_group_id, entry_id)
         return self.__datacatalog.get_entry(name)
 
@@ -250,8 +250,8 @@ class DataCatalogHelper:
             re_match = re.match(pattern=DataCatalogHelper.__ENTRY_NAME_PATTERN,
                                 string=result.relative_resource_name)
             if re_match:
-                entry_group_id, entry_id, = re_match.groups()
-                fileset_entries.append((entry_group_id, entry_id))
+                location, entry_group_id, entry_id, = re_match.groups()
+                fileset_entries.append((location, entry_group_id, entry_id))
 
         return fileset_entries
 

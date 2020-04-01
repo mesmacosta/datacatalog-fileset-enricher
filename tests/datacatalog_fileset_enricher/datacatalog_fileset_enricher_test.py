@@ -233,7 +233,8 @@ class DatacatalogFilesetEnricherTestCase(TestCase):
                                                                                      create_stats_from_dataframe,
                                                                                      create_tag_from_stats
                                                                                     ):
-        get_manually_created_fileset_entries.return_value = [('entry_group_id', 'entry_id')]
+        get_manually_created_fileset_entries.return_value = [('uscentral-1', 'entry_group_id',
+                                                              'entry_id')]
 
         get_entry.return_value = self.__make_fake_fileset_entry()
 
