@@ -1,5 +1,8 @@
 from setuptools import find_packages, setup
 
+with open('README.md') as readme_file:
+    readme = readme_file.read()
+
 setup(
     name='datacatalog-fileset-enricher',
     version='1.0.0',
@@ -25,7 +28,7 @@ setup(
     tests_require=(
         'pytest-cov'
     ),
-    long_description='file: README.md',
+    long_description=readme,
     long_description_content_type='text/markdown',
     classifiers=[
         'Development Status :: 3 - Alpha',
