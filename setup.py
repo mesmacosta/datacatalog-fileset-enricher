@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='datacatalog-fileset-enricher',
-    version='0.0.1',
+    version='1.0.0',
     author='Marcelo Costa',
     author_email='mesmacosta@gmail.com',
     description='A package for enriching the content of a fileset Entry with Datacatalog Tags',
