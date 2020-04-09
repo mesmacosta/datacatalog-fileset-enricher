@@ -243,6 +243,7 @@ class DataCatalogHelper:
 
         search_results = self.__datacatalog.search_catalog(scope=scope, query=query,
                                                            order_by='relevance',
+                                                           timeout=1200,
                                                            page_size=1000)
 
         fileset_entries = []
