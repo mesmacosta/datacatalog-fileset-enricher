@@ -21,14 +21,17 @@ setup(
         'flake8',
         'pytest-runner',
     ),
+    python_requires='>=3.6',
     tests_require=(
         'pytest-cov'
     ),
     classifiers=[
-        'Development Status :: 1 - Alpha',
+        'Development Status :: 3 - Alpha',
         'Natural Language :: English',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
+    url='https://github.com/mesmacosta/datacatalog-fileset-enricher',
+    zip_safe=False,
 )
