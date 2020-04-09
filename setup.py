@@ -25,6 +25,8 @@ setup(
     tests_require=(
         'pytest-cov'
     ),
+    long_description='file: README.md',
+    long_description_content_type='text/markdown',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Natural Language :: English',
