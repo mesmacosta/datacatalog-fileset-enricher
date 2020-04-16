@@ -17,10 +17,8 @@ class DatacatalogFilesetEnricherCLI:
 
     @classmethod
     def _parse_args(cls, argv):
-        parser = argparse.ArgumentParser(
-            description=__doc__,
-            formatter_class=argparse.RawDescriptionHelpFormatter
-        )
+        parser = argparse.ArgumentParser(description=__doc__,
+                                         formatter_class=argparse.RawDescriptionHelpFormatter)
 
         parser.add_argument('--project-id', help='Project id', required=True)
 
@@ -33,21 +31,28 @@ class DatacatalogFilesetEnricherCLI:
 
         enrich_filesets.add_argument('--tag-template-name',
                                      help='Name of the Fileset Enrich template,'
-                                          'i.e: '
-                                          'projects/my-project/locations/us-central1/tagTemplates/'
-                                          'my_template_test')
+                                     'i.e: '
+                                     'projects/my-project/locations/us-central1/tagTemplates/'
+                                     'my_template_test')
 
-        enrich_filesets.add_argument('--entry-group-id',
-                                     help='Entry Group ID')
-        enrich_filesets.add_argument('--entry-id',
-                                     help='Entry ID')
+        enrich_filesets.add_argument('--entry-group-id', help='Entry Group ID')
+        enrich_filesets.add_argument('--entry-id', help='Entry ID')
         enrich_filesets.add_argument('--tag-fields',
                                      help='Specify the fields you want on the generated Tags,'
-                                          ' split by comma, use the list available in the docs')
+                                     ' split by comma, use the list available in the docs')
         enrich_filesets.add_argument('--bucket-prefix',
                                      help='Specify a bucket prefix if you want to avoid scanning'
-                                          ' too many GCS buckets')
+                                     ' too many GCS buckets')
         enrich_filesets.set_defaults(func=cls.__enrich_fileset)
+
+        create_template = subparsers.add_parser('create-template',
+                                                help='Create the Fileset Enrich template')
+
+        create_template.add_argument('--location',
+                                     help='Location of the Fileset Enrich template',
+                                     default='us-central1')
+
+        create_template.set_defaults(func=cls.__create_fileset_template)
 
         clean_up_tags = subparsers.add_parser(
             'clean-up-templates-and-tags',
@@ -79,3 +84,7 @@ class DatacatalogFilesetEnricherCLI:
     @classmethod
     def __clean_up_all(cls, args):
         DatacatalogFilesetEnricher(args.project_id).clean_up_all()
+
+    @classmethod
+    def __create_fileset_template(cls, args):
+        DatacatalogFilesetEnricher(args.project_id).create_template(args.location)

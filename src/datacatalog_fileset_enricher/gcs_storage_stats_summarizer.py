@@ -73,7 +73,7 @@ class GCStorageStatsSummarizer:
     def __extract_file_type(cls, file_name):
         file_type_at = file_name.rfind('.')
         if file_type_at != -1:
-            return file_name[file_type_at+1:]
+            return file_name[file_type_at + 1:]
         else:
             return 'unknown_file_type'
 

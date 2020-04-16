@@ -10,14 +10,12 @@ from datacatalog_fileset_enricher.gcs_storage_filter import StorageFilter
        lambda self, *args: None)
 class StorageFilterTestCase(TestCase):
 
-    @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_buckets')
+    @patch(
+        'datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_buckets')
     @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_blobs')
     @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.get_bucket')
     def test_create_filtered_data_for_multiple_buckets_with_a_matching_bucket_should_create_filtered_data(
-            self,
-            get_bucket,
-            list_blobs,
-            list_buckets):
+        self, get_bucket, list_blobs, list_buckets):
         execution_time = pd.Timestamp.utcnow()
 
         bucket = MockedObject()
@@ -64,14 +62,12 @@ class StorageFilterTestCase(TestCase):
         self.assertEqual(2, list_blobs.call_count)
         list_buckets.assert_called_once()
 
-    @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_buckets')
+    @patch(
+        'datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_buckets')
     @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_blobs')
     @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.get_bucket')
     def test_create_filtered_data_for_single_bucket_with_a_existent_bucket_should_create_filtered_data(
-            self,
-            get_bucket,
-            list_blobs,
-            list_buckets):
+        self, get_bucket, list_blobs, list_buckets):
 
         execution_time = pd.Timestamp.utcnow()
 
@@ -122,14 +118,12 @@ class StorageFilterTestCase(TestCase):
         list_blobs.assert_called_once()
         list_buckets.assert_not_called()
 
-    @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_buckets')
+    @patch(
+        'datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_buckets')
     @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.list_blobs')
     @patch('datacatalog_fileset_enricher.gcs_storage_client_helper.StorageClientHelper.get_bucket')
     def test_create_filtered_data_for_single_bucket_with_nonexistent_bucket_should_create_filtered_data(
-            self,
-            get_bucket,
-            list_blobs,
-            list_buckets):
+        self, get_bucket, list_blobs, list_buckets):
 
         get_bucket.return_value = None
 

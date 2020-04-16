@@ -2,10 +2,11 @@ import logging
 
 import pandas as pd
 
+from google.api_core.exceptions import AlreadyExists
+
 from .datacatalog_helper import DataCatalogHelper
 from .gcs_storage_filter import StorageFilter
 from .gcs_storage_stats_summarizer import GCStorageStatsSummarizer
-
 """
  The Fileset Enhancer relies on the file_pattern created on the Entry.
 
@@ -31,6 +32,18 @@ class DatacatalogFilesetEnricher:
         self.__storage_filter = StorageFilter(project_id)
         self.__dacatalog_helper = DataCatalogHelper(project_id)
         self.__project_id = project_id
+
+    def create_template(self, location):
+        logging.info(f'===> Create Template started')
+
+        tag_template_name = self.__dacatalog_helper.get_tag_template_name(location=location)
+
+        try:
+            self.__dacatalog_helper.create_fileset_enricher_tag_template(tag_template_name)
+        except AlreadyExists:
+            logging.warning(f'Template {tag_template_name} already exists')
+
+        logging.info('==== DONE ==================================================')
 
     def clean_up_all(self):
         logging.info(f'===> Clean up started')
@@ -71,8 +84,13 @@ class DatacatalogFilesetEnricher:
                 self.enrich_datacatalog_fileset_entry(location, entry_group_id, entry_id,
                                                       tag_fields, bucket_prefix, tag_template_name)
 
-    def enrich_datacatalog_fileset_entry(self, location, entry_group_id, entry_id, tag_fields=None,
-                                         bucket_prefix=None, tag_template_name=None):
+    def enrich_datacatalog_fileset_entry(self,
+                                         location,
+                                         entry_group_id,
+                                         entry_id,
+                                         tag_fields=None,
+                                         bucket_prefix=None,
+                                         tag_template_name=None):
         logging.info('')
         logging.info(f'[LOCATION: {location}]')
         logging.info(f'[ENTRY_GROUP: {entry_group_id}]')
@@ -91,19 +109,17 @@ class DatacatalogFilesetEnricher:
 
         execution_time = pd.Timestamp.utcnow()
         dataframe, filtered_buckets_stats = self.__create_dataframe_for_parsed_gcs_patterns(
-            parsed_gcs_patterns,
-            bucket_prefix)
+            parsed_gcs_patterns, bucket_prefix)
 
         logging.info('===> Generate Fileset statistics...')
         stats = GCStorageStatsSummarizer.create_stats_from_dataframe(dataframe, file_patterns,
                                                                      filtered_buckets_stats,
-                                                                     execution_time,
-                                                                     bucket_prefix)
+                                                                     execution_time, bucket_prefix)
 
         logging.info('==== DONE ==================================================')
         logging.info('')
 
-        logging.info('===> Create Tag on DataCatalog...')
+        logging.info('===> Create Tags on DataCatalog from Fileset statistics...')
         self.__dacatalog_helper.create_tag_from_stats(entry, stats, tag_fields, tag_template_name)
         logging.info('==== DONE ==================================================')
         logging.info('')
@@ -120,7 +136,7 @@ class DatacatalogFilesetEnricher:
             if '*' in bucket_name:
                 aux_dataframe, inner_filtered_buckets_stats = self.__storage_filter. \
                     create_filtered_data_for_multiple_buckets(bucket_name, parsed_gcs_pattern[
-                     "file_regex"], bucket_prefix)
+                    "file_regex"], bucket_prefix)
                 if dataframe is not None:
                     dataframe = dataframe.append(aux_dataframe)
                 else:
