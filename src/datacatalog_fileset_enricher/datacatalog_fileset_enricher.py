@@ -47,12 +47,17 @@ class DatacatalogFilesetEnricher:
         self.__dacatalog_helper.delete_tag_template()
         logging.info(f'Template and Tags deleted...')
 
-    def run(self, entry_group_id=None, entry_id=None, tag_fields=None, bucket_prefix=None):
+    def run(self,
+            entry_group_id=None,
+            entry_id=None,
+            tag_fields=None,
+            bucket_prefix=None,
+            tag_template_name=None):
         # If the entry_group_id and entry_id are provided we enrich just this entry,
         # otherwise we retrieve the Fileset Entries using search
         if entry_group_id and entry_id:
             self.enrich_datacatalog_fileset_entry(self.__LOCATION, entry_group_id, entry_id,
-                                                  tag_fields, bucket_prefix)
+                                                  tag_fields, bucket_prefix, tag_template_name)
         else:
             logging.info(f'===> Retrieving manually created Fileset Entries'
                          f' project: {self.__project_id}')
@@ -64,10 +69,10 @@ class DatacatalogFilesetEnricher:
 
             for location, entry_group_id, entry_id in entries:
                 self.enrich_datacatalog_fileset_entry(location, entry_group_id, entry_id,
-                                                      tag_fields, bucket_prefix)
+                                                      tag_fields, bucket_prefix, tag_template_name)
 
     def enrich_datacatalog_fileset_entry(self, location, entry_group_id, entry_id, tag_fields=None,
-                                         bucket_prefix=None):
+                                         bucket_prefix=None, tag_template_name=None):
         logging.info('')
         logging.info(f'[LOCATION: {location}]')
         logging.info(f'[ENTRY_GROUP: {entry_group_id}]')
@@ -99,7 +104,7 @@ class DatacatalogFilesetEnricher:
         logging.info('')
 
         logging.info('===> Create Tag on DataCatalog...')
-        self.__dacatalog_helper.create_tag_from_stats(entry, stats, tag_fields)
+        self.__dacatalog_helper.create_tag_from_stats(entry, stats, tag_fields, tag_template_name)
         logging.info('==== DONE ==================================================')
         logging.info('')
 

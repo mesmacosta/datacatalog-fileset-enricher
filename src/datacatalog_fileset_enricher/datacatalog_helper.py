@@ -112,11 +112,13 @@ class DataCatalogHelper:
             tag_template_id=DataCatalogHelper.__TAG_TEMPLATE,
             tag_template=tag_template)
 
-    def create_tag_from_stats(self, entry, stats, tag_fields=None):
+    def create_tag_from_stats(self, entry, stats, tag_fields=None, tag_template_name=None):
         # Create tag_template.
         try:
-            tag_template = self.get_fileset_enricher_tag_template()
+            tag_template = self.get_fileset_enricher_tag_template(tag_template_name)
         except PermissionDenied:
+            logging.warning(f'Tag Template does not exist, creating it on project: '
+                            f'{self.__project_id}')
             tag_template = self.create_fileset_enricher_tag_template()
 
         tag = datacatalog_v1beta1.types.Tag()
@@ -151,7 +153,7 @@ class DataCatalogHelper:
             tag.fields['files_by_type'].string_value = stats['files_by_type']
 
         if tag_fields:
-            non_used_tag_fields = set(DataCatalogHelper.__AVALIABLE_TAG_FIELDS).\
+            non_used_tag_fields = set(DataCatalogHelper.__AVALIABLE_TAG_FIELDS). \
                 difference(set(tag_fields))
 
             for field in non_used_tag_fields:
@@ -226,10 +228,16 @@ class DataCatalogHelper:
                                                                 entry_group_id, entry_id)
         return self.__datacatalog.get_entry(name)
 
-    def get_fileset_enricher_tag_template(self):
+    def get_fileset_enricher_tag_template(self, tag_template_name=None):
+        if tag_template_name:
+            resolved_tag_template_name = tag_template_name
+        else:
+            resolved_tag_template_name = datacatalog_v1beta1.DataCatalogClient.tag_template_path(
+                self.__project_id,
+                DataCatalogHelper.__LOCATION,
+                DataCatalogHelper.__TAG_TEMPLATE)
         return self.__datacatalog.get_tag_template(
-            datacatalog_v1beta1.DataCatalogClient.tag_template_path(
-                self.__project_id, DataCatalogHelper.__LOCATION, DataCatalogHelper.__TAG_TEMPLATE))
+            resolved_tag_template_name)
 
     # Currently we don't have a list method, so we are using search which is not exhaustive,
     # and might not return some entries.
@@ -290,15 +298,15 @@ class DataCatalogHelper:
 
             values_are_equal = tag_1_field.bool_value == tag_2_field.bool_value
             values_are_equal = values_are_equal and tag_1_field.double_value == \
-                tag_2_field.double_value
+                               tag_2_field.double_value
             values_are_equal = values_are_equal and tag_1_field.string_value == \
-                tag_2_field.string_value
+                               tag_2_field.string_value
             values_are_equal = values_are_equal and \
-                tag_1_field.timestamp_value.seconds == \
-                tag_2_field.timestamp_value.seconds
+                               tag_1_field.timestamp_value.seconds == \
+                               tag_2_field.timestamp_value.seconds
             values_are_equal = values_are_equal and \
-                tag_1_field.enum_value.display_name == \
-                tag_2_field.enum_value.display_name
+                               tag_1_field.enum_value.display_name == \
+                               tag_2_field.enum_value.display_name
 
             if not values_are_equal:
                 return False

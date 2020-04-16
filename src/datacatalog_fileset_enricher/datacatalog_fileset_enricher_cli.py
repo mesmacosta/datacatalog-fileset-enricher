@@ -31,6 +31,12 @@ class DatacatalogFilesetEnricherCLI:
         enrich_filesets = subparsers.add_parser('enrich-gcs-filesets',
                                                 help='Enrich filesets with Tags')
 
+        enrich_filesets.add_argument('--tag-template-name',
+                                     help='Name of the Fileset Enrich template,'
+                                          'i.e: '
+                                          'projects/my-project/locations/us-central1/tagTemplates/'
+                                          'my_template_test')
+
         enrich_filesets.add_argument('--entry-group-id',
                                      help='Entry Group ID')
         enrich_filesets.add_argument('--entry-id',
@@ -63,7 +69,8 @@ class DatacatalogFilesetEnricherCLI:
             tag_fields = args.tag_fields.split(',')
 
         DatacatalogFilesetEnricher(args.project_id).run(args.entry_group_id, args.entry_id,
-                                                        tag_fields, args.bucket_prefix)
+                                                        tag_fields, args.bucket_prefix,
+                                                        args.tag_template_name)
 
     @classmethod
     def __clean_up_fileset_template_and_tags(cls, args):
