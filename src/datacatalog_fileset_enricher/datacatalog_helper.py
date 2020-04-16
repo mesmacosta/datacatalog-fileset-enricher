@@ -131,8 +131,8 @@ class DataCatalogHelper:
                 logging.error(f'\n\nUnable to load the Tag Template, no permission to execute '
                               f'get_tag_template. \n\n'
                               f'HINT: the Template is in a different project. \n'
-                              f'[execution_project]: {self.__project_id} \n' 
-                              f'[tag_template_project]: {tag_template_project_id} \n' 
+                              f'[execution_project]: {self.__project_id} \n'
+                              f'[tag_template_project]: {tag_template_project_id} \n'
                               f'Check if your service account has access to it.')
                 exit(1)
 
