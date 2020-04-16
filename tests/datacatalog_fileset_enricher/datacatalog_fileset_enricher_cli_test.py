@@ -39,7 +39,7 @@ class TagManagerCLITest(TestCase):
     @mock.patch(f'{__PATCHED_FILE_ENRICHER_PROCESSOR}.__init__', lambda self, *args: None)
     @mock.patch(f'{__PATCHED_FILE_ENRICHER_PROCESSOR}.clean_up_fileset_template_and_tags')
     def test_clen_up_fileset_templates_and_tag_with_args_should_not_raise_exception(
-        self, clean_up_fileset_template_and_tags):
+        self, clean_up_fileset_template_and_tags):  # noqa: E125
         datacatalog_fileset_enricher_cli.DatacatalogFilesetEnricherCLI.run(
             ['--project-id=test-project', 'clean-up-templates-and-tags'])
         clean_up_fileset_template_and_tags.assert_called_once()

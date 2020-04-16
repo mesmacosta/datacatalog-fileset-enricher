@@ -323,15 +323,14 @@ class DataCatalogHelper:
 
             values_are_equal = tag_1_field.bool_value == tag_2_field.bool_value
             values_are_equal = values_are_equal and tag_1_field.double_value == \
-                               tag_2_field.double_value
+                tag_2_field.double_value
+
             values_are_equal = values_are_equal and tag_1_field.string_value == \
-                               tag_2_field.string_value
-            values_are_equal = values_are_equal and \
-                               tag_1_field.timestamp_value.seconds == \
-                               tag_2_field.timestamp_value.seconds
-            values_are_equal = values_are_equal and \
-                               tag_1_field.enum_value.display_name == \
-                               tag_2_field.enum_value.display_name
+                tag_2_field.string_value
+            values_are_equal = values_are_equal and tag_1_field.timestamp_value.seconds == \
+                tag_2_field.timestamp_value.seconds
+            values_are_equal = values_are_equal and tag_1_field.enum_value.display_name == \
+                tag_2_field.enum_value.display_name
 
             if not values_are_equal:
                 return False

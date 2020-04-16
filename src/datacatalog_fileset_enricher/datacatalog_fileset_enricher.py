@@ -136,7 +136,7 @@ class DatacatalogFilesetEnricher:
             if '*' in bucket_name:
                 aux_dataframe, inner_filtered_buckets_stats = self.__storage_filter. \
                     create_filtered_data_for_multiple_buckets(bucket_name, parsed_gcs_pattern[
-                    "file_regex"], bucket_prefix)
+                        "file_regex"], bucket_prefix)
                 if dataframe is not None:
                     dataframe = dataframe.append(aux_dataframe)
                 else:

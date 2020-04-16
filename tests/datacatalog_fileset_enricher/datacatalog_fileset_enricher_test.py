@@ -15,9 +15,8 @@ from datacatalog_fileset_enricher.datacatalog_fileset_enricher import Datacatalo
 class DatacatalogFilesetEnricherTestCase(TestCase):
 
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.delete_tag_template')
-    @patch(
-        'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.delete_entries_and_entry_groups'
-    )
+    @patch('datacatalog_fileset_enricher.datacatalog_helper.'
+           'DataCatalogHelper.delete_entries_and_entry_groups')
     def test_clean_up_all_should_call_the_right_clean_up_methods(self,
                                                                  delete_entries_and_entry_groups,
                                                                  delete_tag_template):
@@ -28,11 +27,11 @@ class DatacatalogFilesetEnricherTestCase(TestCase):
         delete_tag_template.assert_called_once()
 
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.delete_tag_template')
-    @patch(
-        'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.delete_entries_and_entry_groups'
-    )
+    @patch('datacatalog_fileset_enricher.datacatalog_helper.'
+           'DataCatalogHelper.delete_entries_and_entry_groups')
     def test_clean_up_fileset_template_and_tags_should_call_the_right_clean_up_methods(
-        self, delete_entries_and_entry_groups, delete_tag_template):
+        self, delete_entries_and_entry_groups, delete_tag_template):  # noqa: E125
+
         datacatalog_fileset_enricher = DatacatalogFilesetEnricher('test_project')
         datacatalog_fileset_enricher.clean_up_fileset_template_and_tags()
 
@@ -41,24 +40,21 @@ class DatacatalogFilesetEnricherTestCase(TestCase):
 
     @patch(
         'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.create_tag_from_stats')
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_stats_summarizer.GCStorageStatsSummarizer.create_stats_from_dataframe'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_multiple_buckets'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_single_bucket'
-    )
+    @patch('datacatalog_fileset_enricher.gcs_storage_stats_summarizer.'
+           'GCStorageStatsSummarizer.create_stats_from_dataframe')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_multiple_buckets')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_single_bucket')
     @patch('datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.parse_gcs_file_patterns')
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_entry')
-    @patch(
-        'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_manually_created_fileset_entries'
-    )
+    @patch('datacatalog_fileset_enricher.datacatalog_helper.'
+           'DataCatalogHelper.get_manually_created_fileset_entries')
     def test_run_given_entry_group_id_and_entry_id_should_enrich_a_single_entry(
         self, get_manually_created_fileset_entries, get_entry, parse_gcs_file_patterns,
         create_filtered_data_for_single_bucket, create_filtered_data_for_multiple_buckets,
-        create_stats_from_dataframe, create_tag_from_stats):
+        create_stats_from_dataframe, create_tag_from_stats):  # noqa: E125
+
         get_entry.return_value = self.__make_fake_fileset_entry()
 
         parse_gcs_file_patterns.return_value = [{'bucket_name': 'my_bucket', 'file_regex': '.*'}]
@@ -83,24 +79,22 @@ class DatacatalogFilesetEnricherTestCase(TestCase):
 
     @patch(
         'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.create_tag_from_stats')
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_stats_summarizer.GCStorageStatsSummarizer.create_stats_from_dataframe'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_multiple_buckets'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_single_bucket'
-    )
-    @patch('datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.parse_gcs_file_patterns')
-    @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_entry')
-    @patch(
-        'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_manually_created_fileset_entries'
-    )
-    def test_run_given_entry_group_id_and_entry_id_and_multiple_gcs_patterns_should_enrich_a_single_entry(
+    @patch('datacatalog_fileset_enricher.gcs_storage_stats_summarizer.'
+           'GCStorageStatsSummarizer.create_stats_from_dataframe')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_multiple_buckets')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_single_bucket')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.parse_gcs_file_patterns')
+    @patch('datacatalog_fileset_enricher.datacatalog_helper.' 'DataCatalogHelper.get_entry')
+    @patch('datacatalog_fileset_enricher.datacatalog_helper.'
+           'DataCatalogHelper.get_manually_created_fileset_entries')
+    def test_run_given_entry_group_id_and_entry_id_and_multiple_gcs_patterns_should_enrich_a_single_entry(  # noqa: E501
         self, get_manually_created_fileset_entries, get_entry, parse_gcs_file_patterns,
         create_filtered_data_for_single_bucket, create_filtered_data_for_multiple_buckets,
-        create_stats_from_dataframe, create_tag_from_stats):
+        create_stats_from_dataframe, create_tag_from_stats):  # noqa: E125
+
         entry = self.__make_fake_fileset_entry()
 
         entry.gcs_fileset_spec.file_patterns.append('gs://my_bucket/*csv')
@@ -135,24 +129,21 @@ class DatacatalogFilesetEnricherTestCase(TestCase):
 
     @patch(
         'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.create_tag_from_stats')
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_stats_summarizer.GCStorageStatsSummarizer.create_stats_from_dataframe'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_multiple_buckets'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_single_bucket'
-    )
+    @patch('datacatalog_fileset_enricher.gcs_storage_stats_summarizer.'
+           'GCStorageStatsSummarizer.create_stats_from_dataframe')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_multiple_buckets')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_single_bucket')
     @patch('datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.parse_gcs_file_patterns')
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_entry')
-    @patch(
-        'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_manually_created_fileset_entries'
-    )
+    @patch('datacatalog_fileset_enricher.datacatalog_helper.'
+           'DataCatalogHelper.get_manually_created_fileset_entries')
     def test_run_given_bucket_with_wildcard_should_call_retrieve_multiple_buckets(
         self, get_manually_created_fileset_entries, get_entry, parse_gcs_file_patterns,
         create_filtered_data_for_single_bucket, create_filtered_data_for_multiple_buckets,
-        create_stats_from_dataframe, create_tag_from_stats):
+        create_stats_from_dataframe, create_tag_from_stats):  # noqa: E125
+
         get_entry.return_value = self.__make_fake_fileset_entry()
 
         parse_gcs_file_patterns.return_value = [{'bucket_name': 'my_bucket*', 'file_regex': '.*'}]
@@ -178,21 +169,17 @@ class DatacatalogFilesetEnricherTestCase(TestCase):
 
     @patch(
         'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.create_tag_from_stats')
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_stats_summarizer.GCStorageStatsSummarizer.create_stats_from_dataframe'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_multiple_buckets'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_single_bucket'
-    )
+    @patch('datacatalog_fileset_enricher.gcs_storage_stats_summarizer.'
+           'GCStorageStatsSummarizer.create_stats_from_dataframe')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_multiple_buckets')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_single_bucket')
     @patch('datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.parse_gcs_file_patterns')
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_entry')
-    @patch(
-        'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_manually_created_fileset_entries'
-    )
-    def test_run_given_bucket_with_wildcard_and_multiple_gcs_patterns_should_call_retrieve_multiple_buckets(
+    @patch('datacatalog_fileset_enricher.datacatalog_helper.'
+           'DataCatalogHelper.get_manually_created_fileset_entries')
+    def test_run_given_bucket_with_wildcard_and_multiple_gcs_patterns_should_call_retrieve_multiple_buckets(  # noqa: E501
         self, get_manually_created_fileset_entries, get_entry, parse_gcs_file_patterns,
         create_filtered_data_for_single_bucket, create_filtered_data_for_multiple_buckets,
         create_stats_from_dataframe, create_tag_from_stats):
@@ -231,24 +218,21 @@ class DatacatalogFilesetEnricherTestCase(TestCase):
 
     @patch(
         'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.create_tag_from_stats')
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_stats_summarizer.GCStorageStatsSummarizer.create_stats_from_dataframe'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_multiple_buckets'
-    )
-    @patch(
-        'datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.create_filtered_data_for_single_bucket'
-    )
+    @patch('datacatalog_fileset_enricher.gcs_storage_stats_summarizer.'
+           'GCStorageStatsSummarizer.create_stats_from_dataframe')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_multiple_buckets')
+    @patch('datacatalog_fileset_enricher.gcs_storage_filter.'
+           'StorageFilter.create_filtered_data_for_single_bucket')
     @patch('datacatalog_fileset_enricher.gcs_storage_filter.StorageFilter.parse_gcs_file_patterns')
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_entry')
-    @patch(
-        'datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.get_manually_created_fileset_entries'
-    )
+    @patch('datacatalog_fileset_enricher.datacatalog_helper.'
+           'DataCatalogHelper.get_manually_created_fileset_entries')
     def test_run_given_no_entry_group_id_and_entry_id_should_enrich_multiple_entries(
         self, get_manually_created_fileset_entries, get_entry, parse_gcs_file_patterns,
         create_filtered_data_for_single_bucket, create_filtered_data_for_multiple_buckets,
-        create_stats_from_dataframe, create_tag_from_stats):
+        create_stats_from_dataframe, create_tag_from_stats):  # noqa: E125
+
         get_manually_created_fileset_entries.return_value = [('uscentral-1', 'entry_group_id',
                                                               'entry_id')]
 

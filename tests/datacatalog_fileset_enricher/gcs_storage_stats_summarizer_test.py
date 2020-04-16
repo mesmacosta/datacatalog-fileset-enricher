@@ -23,7 +23,7 @@ class GCStorageStatsSummarizerTestCase(TestCase):
         self.assertEqual(execution_time, stats['execution_time'])
         self.assertEqual(None, stats['bucket_prefix'])
 
-    def test_create_stats_from_dataframe_with_no_dataframe_and_no_bucket_stats_should_summarize_the_bucket_stats(
+    def test_create_stats_from_dataframe_with_no_dataframe_and_no_bucket_stats_should_summarize_the_bucket_stats(  # noqa: E501
         self):
         dataframe = None
         filtered_buckets_stats = []
@@ -41,7 +41,7 @@ class GCStorageStatsSummarizerTestCase(TestCase):
         self.assertEqual(execution_time, stats['execution_time'])
         self.assertEqual(None, stats['bucket_prefix'])
 
-    def test_create_stats_from_dataframe_with_no_dataframe_with_bucket_prefix_should_summarize_the_bucket_stats(
+    def test_create_stats_from_dataframe_with_no_dataframe_with_bucket_prefix_should_summarize_the_bucket_stats(  # noqa: E501
         self):
         dataframe = None
         filtered_buckets_stats = [{'bucket_name': 'my_bucket', 'files': 100}]

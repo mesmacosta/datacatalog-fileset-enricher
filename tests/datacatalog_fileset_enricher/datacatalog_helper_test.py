@@ -50,17 +50,20 @@ class DatacatalogHelperTestCase(TestCase):
         entry = MockedObject()
         entry.name = 'fileset_entry'
         entry.relative_resource_name = \
-            'projects/uat-env-1/locations/us-central1/entryGroups/entry_group_enricher_1/entries/entry_id_enricher_1'
+            'projects/uat-env-1/locations/us-central1/entryGroups/entry_group_enricher_1/' \
+            'entries/entry_id_enricher_1'
 
         entry_2 = MockedObject()
         entry_2.name = 'fileset_entry'
         entry_2.relative_resource_name = \
-            'projects/uat-env-1/locations/us-central1/entryGroups/entry_group_enricher_1/entries/entry_id_enricher_2'
+            'projects/uat-env-1/locations/us-central1/entryGroups/entry_group_enricher_1/' \
+            'entries/entry_id_enricher_2'
 
         entry_3 = MockedObject()
         entry_3.name = 'fileset_entry'
         entry_3.relative_resource_name = \
-            'projects/uat-env-1/locations/us-central1/entryGroups/entry_group_enricher_2/entries/entry_id_enricher_3'
+            'projects/uat-env-1/locations/us-central1/entryGroups/entry_group_enricher_2/' \
+            'entries/entry_id_enricher_3'
 
         search_catalog.return_value = [entry, entry_2, entry_3]
 
@@ -141,7 +144,8 @@ class DatacatalogHelperTestCase(TestCase):
            'create_fileset_enricher_tag_template')
     def test_create_tag_with_no_files_found_should_not_raise_error(
         self, create_fileset_enricher_tag_template, get_fileset_enricher_tag_template, list_tags,
-        create_tag):
+        create_tag):  # noqa: E501
+
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
         entry.name = 'fileset_entry'
@@ -174,7 +178,8 @@ class DatacatalogHelperTestCase(TestCase):
            'create_fileset_enricher_tag_template')
     def test_create_tag_with_files_found_should_not_raise_error(
         self, create_fileset_enricher_tag_template, get_fileset_enricher_tag_template, list_tags,
-        create_tag):
+        create_tag):  # noqa: E501
+
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
         entry.name = 'fileset_entry'
@@ -200,7 +205,10 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.'
            'create_fileset_enricher_tag_template')
     def test_create_tag_with_bucket_prefix_should_not_raise_error(
-        self, create_fileset_enricher_tag_template, get_fileset_enricher_tag_template, list_tags,
+        self,
+        create_fileset_enricher_tag_template,
+        get_fileset_enricher_tag_template,
+        list_tags,  # noqa: E125
         create_tag):
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
@@ -228,7 +236,10 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.'
            'create_fileset_enricher_tag_template')
     def test_create_tag_non_existent_template_should_not_raise_error(
-        self, create_fileset_enricher_tag_template, get_fileset_enricher_tag_template, list_tags,
+        self,
+        create_fileset_enricher_tag_template,
+        get_fileset_enricher_tag_template,
+        list_tags,  # noqa: E125
         create_tag):
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
@@ -257,7 +268,10 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.'
            'create_fileset_enricher_tag_template')
     def test_create_tag_providing_tag_fields_should_filter_fields(
-        self, create_fileset_enricher_tag_template, get_fileset_enricher_tag_template, list_tags,
+        self,
+        create_fileset_enricher_tag_template,
+        get_fileset_enricher_tag_template,
+        list_tags,  # noqa: E125
         create_tag):
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
@@ -306,7 +320,10 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('datacatalog_fileset_enricher.datacatalog_helper.DataCatalogHelper.'
            'create_fileset_enricher_tag_template')
     def test_create_tag_providing_tag_fields_with_key_error_should_leak_the_error(
-        self, create_fileset_enricher_tag_template, get_fileset_enricher_tag_template, list_tags,
+        self,
+        create_fileset_enricher_tag_template,
+        get_fileset_enricher_tag_template,
+        list_tags,  # noqa: E125
         create_tag):
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
@@ -358,7 +375,8 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.delete_entry')
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.delete_entry_group')
     def test_delete_entries_and_entry_groups_should_successfully_delete_them(
-        self, delete_entry_group, delete_entry, search_catalog):
+        self, delete_entry_group, delete_entry, search_catalog):  # noqa: E501
+
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
         entry.name = 'fileset_entry'
@@ -384,7 +402,8 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.delete_entry')
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.delete_entry_group')
     def test_delete_entries_error_on_delete_entry_should_not_leak_error(
-        self, delete_entry_group, delete_entry, search_catalog):
+        self, delete_entry_group, delete_entry, search_catalog):  # noqa: E501
+
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
         entry.name = 'fileset_entry'
@@ -412,7 +431,8 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.delete_entry')
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.delete_entry_group')
     def test_delete_entries_error_on_delete_entry_group_should_not_leak_error(
-        self, delete_entry_group, delete_entry, search_catalog):
+        self, delete_entry_group, delete_entry, search_catalog):  # noqa: E501
+
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
         entry.name = 'fileset_entry'
@@ -461,7 +481,8 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.create_tag')
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.list_tags')
     def test_synchronize_entries_tags_should_not_update_tag_when_no_changes(
-        self, list_tags, create_tag, update_tag):
+        self, list_tags, create_tag, update_tag):  # noqa: E501
+
         updated_tag = self.__make_fake_tag()
         current_tag = self.__make_fake_tag()
 
@@ -481,7 +502,8 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.create_tag')
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.list_tags')
     def test_synchronize_entries_tags_should_create_tag_when_tag_is_new(
-        self, list_tags, create_tag, update_tag):
+        self, list_tags, create_tag, update_tag):  # noqa: E501
+
         updated_tag = self.__make_fake_tag()
 
         list_tags.return_value = []
@@ -500,7 +522,8 @@ class DatacatalogHelperTestCase(TestCase):
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.create_tag')
     @patch('google.cloud.datacatalog_v1.DataCatalogClient.list_tags')
     def test_synchronize_entries_tags_should_do_nothing_when_no_tags_are_provided(
-        self, list_tags, create_tag, update_tag):
+        self, list_tags, create_tag, update_tag):  # noqa: E501
+
         datacatalog_helper = DataCatalogHelper('test_project')
         entry = MockedObject()
         entry.name = 'fileset_entry'
