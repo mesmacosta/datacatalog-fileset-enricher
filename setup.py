@@ -5,7 +5,7 @@ with open('README.md') as readme_file:
 
 setup(
     name='datacatalog-fileset-enricher',
-    version='1.1.0',
+    version='1.1.1',
     author='Marcelo Costa',
     author_email='mesmacosta@gmail.com',
     description='A package for enriching the content of a fileset Entry with Datacatalog Tags',
