@@ -105,16 +105,24 @@ docker run --rm --tty -v your_credentials_folder:/data datacatalog-fileset-enric
   enrich-gcs-filesets
 ```
 
-### 3.2. python main.py -- Enrich a single entry
+### 3.2. python main.py -- Enrich all fileset entries using template from a different Project
 
 ```bash
 python main.py --project-id my_project \
   enrich-gcs-filesets \
- --entry-group-id my_entry_group \
- --entry-id my_entry
+  --tag-template-name projects/my_different_project/locations/us-central1/tagTemplates/fileset_enricher_findings
 ```
 
-### 3.3. python main.py -- Enrich a single entry, specifying desired tag fields
+### 3.3. python main.py -- Enrich a single entry
+
+```bash
+python main.py --project-id my_project \
+  enrich-gcs-filesets \
+   --entry-group-id my_entry_group \
+   --entry-id my_entry
+```
+
+### 3.4. python main.py -- Enrich a single entry, specifying desired tag fields
 Users are able to choose the Tag fields from the list provided at [Tags](#1-created-tags)
 
 ```bash
@@ -125,7 +133,7 @@ python main.py --project-id my_project \
  --tag-fields files,prefix
 ```
 
-### 3.4. python main.py -- Pass a bucket prefix if you want to avoid scanning too many buckets
+### 3.5. python main.py -- Pass a bucket prefix if you want to avoid scanning too many buckets
 When the bucket_prefix is specified, the list_bucket api calls pass this prefix and avoid scanning buckets
 that don't match the prefix. This only applies when there's a wildcard on the bucket_name, otherwise the
 get bucket method is called and the bucket_prefix is ignored.
@@ -136,7 +144,16 @@ python main.py --project-id my_project \
  --bucket-prefix my_bucket
 ```
 
-### 3.5. python clean up template and tags (Reversible)
+### 3.6. python create fileset enricher template in a project
+Creates the fileset enricher template in a different project.
+
+```bash
+python main.py --project-id my_different_project \
+    create-template
+```
+
+
+### 3.6. python clean up template and tags (Reversible)
 Cleans up the Template and Tags from the Fileset Entries, running the main command will recreate those.
 
 ```bash
@@ -144,7 +161,7 @@ python main.py --project-id my_project \
   clean-up-templates-and-tags
 ```
 
-### 3.6.  python clean up all (Non Reversible, be careful)
+### 3.7.  python clean up all (Non Reversible, be careful)
 Cleans up the Fileset Entries, Template and Tags. You have to re create the Fileset entries if you need to restore the state,
 which is outside the scope of this script.
 
