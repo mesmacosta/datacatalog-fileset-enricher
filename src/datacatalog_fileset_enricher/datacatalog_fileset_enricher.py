@@ -40,6 +40,7 @@ class DatacatalogFilesetEnricher:
 
         try:
             self.__dacatalog_helper.create_fileset_enricher_tag_template(tag_template_name)
+            logging.warning(f'Template {tag_template_name} created!')
         except AlreadyExists:
             logging.warning(f'Template {tag_template_name} already exists')
 
