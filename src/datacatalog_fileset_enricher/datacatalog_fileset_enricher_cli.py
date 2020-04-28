@@ -45,24 +45,10 @@ class DatacatalogFilesetEnricherCLI:
                                      ' too many GCS buckets')
         enrich_filesets.set_defaults(func=cls.__enrich_fileset)
 
-        create_template = subparsers.add_parser('create-template',
-                                                help='Create the Fileset Enrich template')
-
-        create_template.add_argument('--location',
-                                     help='Location of the Fileset Enrich template',
-                                     default='us-central1')
-
-        create_template.set_defaults(func=cls.__create_fileset_template)
-
         clean_up_tags = subparsers.add_parser(
             'clean-up-templates-and-tags',
             help='Clean up the Fileset Enhancer Template and Tags From the Fileset Entries')
         clean_up_tags.set_defaults(func=cls.__clean_up_fileset_template_and_tags)
-
-        clean_up_all = subparsers.add_parser(
-            'clean-up-all',
-            help='Clean up Fileset Entries, Their Tags and the Fileset Enhancer Template')
-        clean_up_all.set_defaults(func=cls.__clean_up_all)
 
         args = parser.parse_args(argv)
         args.func(args)
@@ -80,11 +66,3 @@ class DatacatalogFilesetEnricherCLI:
     @classmethod
     def __clean_up_fileset_template_and_tags(cls, args):
         DatacatalogFilesetEnricher(args.project_id).clean_up_fileset_template_and_tags()
-
-    @classmethod
-    def __clean_up_all(cls, args):
-        DatacatalogFilesetEnricher(args.project_id).clean_up_all()
-
-    @classmethod
-    def __create_fileset_template(cls, args):
-        DatacatalogFilesetEnricher(args.project_id).create_template(args.location)

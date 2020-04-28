@@ -107,6 +107,10 @@ docker run --rm --tty -v your_credentials_folder:/data datacatalog-fileset-enric
 
 ### 3.2. python main.py -- Enrich all fileset entries using template from a different Project
 
+If you are using a different project, make sure the Service Account has the following permissions on that project:
+* Data Catalog TagTemplate Creator
+* Data Catalog TagTemplate User
+
 ```bash
 python main.py --project-id my_project \
   enrich-gcs-filesets \
@@ -144,14 +148,6 @@ python main.py --project-id my_project \
  --bucket-prefix my_bucket
 ```
 
-### 3.6. python create fileset enricher template in a project
-Creates the fileset enricher template in a different project.
-
-```bash
-python main.py --project-id my_different_project \
-    create-template
-```
-
 
 ### 3.6. python clean up template and tags (Reversible)
 Cleans up the Template and Tags from the Fileset Entries, running the main command will recreate those.
@@ -159,15 +155,6 @@ Cleans up the Template and Tags from the Fileset Entries, running the main comma
 ```bash
 python main.py --project-id my_project \
   clean-up-templates-and-tags
-```
-
-### 3.7.  python clean up all (Non Reversible, be careful)
-Cleans up the Fileset Entries, Template and Tags. You have to re create the Fileset entries if you need to restore the state,
-which is outside the scope of this script.
-
-```bash
-python main.py --project-id my_project \
-  clean-up-all
 ```
 
 ## Disclaimers

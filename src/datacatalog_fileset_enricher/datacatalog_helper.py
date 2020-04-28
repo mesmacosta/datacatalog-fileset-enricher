@@ -124,18 +124,6 @@ class DataCatalogHelper:
         except exceptions.AlreadyExists:
             logging.warning(f'Tag Template {resolved_tag_template_name} already exists.')
         except exceptions.PermissionDenied:
-            tag_template_project_id, _, _ = \
-                self.extract_resources_from_template(resolved_tag_template_name)
-
-            if tag_template_project_id != self.__project_id:
-                logging.error(f'\n\nUnable to load the Tag Template, no permission to execute '
-                              f'get_tag_template. \n\n'
-                              f'HINT: the Template is in a different project. \n'
-                              f'[execution_project]: {self.__project_id} \n'
-                              f'[tag_template_project]: {tag_template_project_id} \n'
-                              f'Check if your service account has access to it.')
-                exit(1)
-
             self.create_fileset_enricher_tag_template(resolved_tag_template_name)
 
         tag = datacatalog_v1.types.Tag()
