@@ -182,7 +182,8 @@ class DatacatalogFilesetEnricherTestCase(TestCase):
     def test_run_given_bucket_with_wildcard_and_multiple_gcs_patterns_should_call_retrieve_multiple_buckets(  # noqa: E501
         self, get_manually_created_fileset_entries, get_entry, parse_gcs_file_patterns,
         create_filtered_data_for_single_bucket, create_filtered_data_for_multiple_buckets,
-        create_stats_from_dataframe, create_tag_from_stats):
+        create_stats_from_dataframe, create_tag_from_stats):  # noqa:E125
+
         entry = self.__make_fake_fileset_entry()
 
         entry.gcs_fileset_spec.file_patterns.append('gs://my_bucket*/*csv')

@@ -34,7 +34,7 @@ class DatacatalogFilesetEnricher:
         self.__project_id = project_id
 
     def create_template(self, location):
-        logging.info(f'===> Create Template started')
+        logging.info('===> Create Template started')
 
         tag_template_name = self.__dacatalog_helper.get_tag_template_name(location=location)
 
@@ -47,19 +47,19 @@ class DatacatalogFilesetEnricher:
         logging.info('==== DONE ==================================================')
 
     def clean_up_all(self):
-        logging.info(f'===> Clean up started')
+        logging.info('===> Clean up started')
 
         self.__dacatalog_helper.delete_tag_template()
-        logging.info(f'Template and Tags deleted...')
+        logging.info('Template and Tags deleted...')
 
         self.__dacatalog_helper.delete_entries_and_entry_groups()
         logging.info('==== DONE ==================================================')
 
     def clean_up_fileset_template_and_tags(self):
-        logging.info(f'===> Clean up started')
+        logging.info('===> Clean up started')
 
         self.__dacatalog_helper.delete_tag_template()
-        logging.info(f'Template and Tags deleted...')
+        logging.info('Template and Tags deleted...')
 
     def run(self,
             entry_group_id=None,
@@ -96,7 +96,7 @@ class DatacatalogFilesetEnricher:
         logging.info(f'[LOCATION: {location}]')
         logging.info(f'[ENTRY_GROUP: {entry_group_id}]')
         logging.info(f'[ENTRY: {entry_id}]')
-        logging.info(f'===> Enrich Fileset Entry metadata with tags')
+        logging.info('===> Enrich Fileset Entry metadata with tags')
         logging.info('')
         logging.info('===> Get Entry from DataCatalog...')
         entry = self.__dacatalog_helper.get_entry(location, entry_group_id, entry_id)
