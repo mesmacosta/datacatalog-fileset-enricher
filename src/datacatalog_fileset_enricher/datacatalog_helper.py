@@ -301,7 +301,7 @@ class DataCatalogHelper:
                 self.__datacatalog.update_tag(tag=tag_to_update, update_mask=None)
                 logging.info(f'Tag updated: {tag_to_update.name}')
             else:
-                logging.info(f'Tag is up to date')
+                logging.info('Tag is up to date')
 
     @classmethod
     def __tags_fields_are_equal(cls, tag_1, tag_2):
