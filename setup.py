@@ -5,7 +5,7 @@ with open('README.md') as readme_file:
 
 setup(
     name='datacatalog-fileset-enricher',
-    version='1.1.1',
+    version='1.1.2',
     author='Marcelo Costa',
     author_email='mesmacosta@gmail.com',
     description='A package for enriching the content of a fileset Entry with Datacatalog Tags',
@@ -18,7 +18,7 @@ setup(
     install_requires=(
         'pandas',
         'google-cloud-storage',
-        'google-cloud-datacatalog',
+        'google-cloud-datacatalog>=1,<2',
     ),
     setup_requires=(
         'flake8',
